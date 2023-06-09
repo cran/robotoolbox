@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+
+<title>Multi-Language Survey Forms</title>
+
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+
+<style type="text/css">
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
+
+
+
+<style type="text/css">
+code {
+white-space: pre;
+}
+.sourceCode {
+overflow: visible;
+}
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    var j = 0;
+    while (j < rules.length) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Multi-Language Survey Forms</h1>
+
+
+
+<p>During data collection, it is often necessary to translate survey
+forms into multiple languages. Forms in <code>KoboToolbox</code> allow
+users to easily add translations, which can be used to label questions
+and choice values in either single or multiple-choice questions.</p>
+<p><code>robotoolbox</code> provides the capability to access these
+labels used in the form. The <a href="https://cran.r-project.org/package=labelled/vignettes/intro_labelled.html"><code>labelled</code></a>
+package is used to encode variable labels for question labels and value
+labels for choice labels.</p>
+<p>The following example showcases a project in <code>KoboToolbox</code>
+that employs three languages: English, French, and Arabic.</p>
+<ul>
+<li><strong>Survey questions</strong></li>
+</ul>
+<table>
+<colgroup>
+<col width="16%" />
+<col width="10%" />
+<col width="20%" />
+<col width="33%" />
+<col width="18%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">type</th>
+<th align="left">name</th>
+<th align="left">label::English (en)</th>
+<th align="left">label::Francais (fr)</th>
+<th align="left">label::Arabic (ar)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">start</td>
+<td align="left">start</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">end</td>
+<td align="left">end</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">today</td>
+<td align="left">today</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">text</td>
+<td align="left">full_name</td>
+<td align="left">What is your name?</td>
+<td align="left">Quel est votre nom ?</td>
+<td align="left">ما اسمك ؟</td>
+</tr>
+<tr class="odd">
+<td align="left">select_one yesno</td>
+<td align="left">pet_yesno</td>
+<td align="left">Do you have any pet?</td>
+<td align="left">Avez-vous un animal de compagnie ?</td>
+<td align="left">هل تمتلك حيوانا أليفا ؟</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>Choices</strong></li>
+</ul>
+<table>
+<colgroup>
+<col width="13%" />
+<col width="7%" />
+<col width="26%" />
+<col width="27%" />
+<col width="25%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">list_name</th>
+<th align="right">name</th>
+<th align="left">label::English (en)</th>
+<th align="left">label::Francais (fr)</th>
+<th align="left">label::Arabic (ar)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">yesno</td>
+<td align="right">1</td>
+<td align="left">Yes</td>
+<td align="left">Oui</td>
+<td align="left">نعم</td>
+</tr>
+<tr class="even">
+<td align="left">yesno</td>
+<td align="right">0</td>
+<td align="left">No</td>
+<td align="left">Non</td>
+<td align="left">لا</td>
+</tr>
+</tbody>
+</table>
+<div id="loading-the-survey" class="section level3">
+<h3>Loading the survey</h3>
+<p>To load this survey from your <code>KoboToolbox</code> server into
+your <code>R</code> session, you can use its unique identifier
+(<code>uid = aYuTZn9vegi3Z49MXwKjep</code>) with the
+<code>kobo_asset</code> function.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">library</span>(robotoolbox)</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a>uid <span class="ot">&lt;-</span> <span class="st">&quot;aYuTZn9vegi3Z49MXwKjep&quot;</span></span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a>asset <span class="ot">&lt;-</span> <span class="fu">kobo_asset</span>(uid)</span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a>asset</span></code></pre></div>
+<pre><code>#&gt; &lt;robotoolbox asset&gt;  aYuTZn9vegi3Z49MXwKjep 
+#&gt;   Asset name: Multiple languages
+#&gt;   Asset type: survey
+#&gt;   Asset owner: dickoa
+#&gt;   Created: 2022-01-07 10:37:19
+#&gt;   Last modified: 2022-01-07 10:37:36
+#&gt;   Submissions: 5</code></pre>
+</div>
+<div id="listing-available-languages" class="section level3">
+<h3>Listing available languages</h3>
+<p>The <code>kobo_lang</code> function can be used to list all available
+languages for this survey.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="fu">kobo_lang</span>(asset)</span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="co">#&gt; [1] &quot;English (en)&quot;  &quot;Francais (fr)&quot; &quot;Arabic (ar)&quot;</span></span></code></pre></div>
+</div>
+<div id="reading-data-in-each-language" class="section level3">
+<h3>Reading data in each language</h3>
+<p>The <code>kobo_data</code> function allows you to specify the
+language to be loaded using the <code>lang</code> parameter. You can
+check the spelling of each language using <code>kobo_lang</code>.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a>df_en <span class="ot">&lt;-</span> <span class="fu">kobo_data</span>(asset, <span class="at">lang =</span> <span class="st">&quot;English (en)&quot;</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>df_fr <span class="ot">&lt;-</span> <span class="fu">kobo_data</span>(asset, <span class="at">lang =</span> <span class="st">&quot;Francais (fr)&quot;</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a>df_ar <span class="ot">&lt;-</span> <span class="fu">kobo_data</span>(asset, <span class="at">lang =</span> <span class="st">&quot;Arabic (ar)&quot;</span>)</span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a><span class="fu">glimpse</span>(df_en)</span></code></pre></div>
+<pre><code>#&gt; Rows: 5
+#&gt; Columns: 15
+#&gt; $ start                &lt;dttm&gt; 2022-01-07 10:39:47, 2022-01-07 10:39:37, 2022-0…
+#&gt; $ end                  &lt;dttm&gt; 2022-01-07 10:40:02, 2022-01-07 10:39:47, 2022-0…
+#&gt; $ today                &lt;date&gt; 2022-01-07, 2022-01-07, 2022-01-07, 2022-01-07, …
+#&gt; $ full_name            &lt;chr&gt; &quot;Fatim&quot;, &quot;Jean-Pierre&quot;, &quot;إبراهيم&quot;, &quot;Michelle&quot;, &quot;A…
+#&gt; $ pet_yesno            &lt;chr+lbl&gt; &quot;1&quot;, &quot;0&quot;, &quot;1&quot;, &quot;1&quot;, &quot;0&quot;
+#&gt; $ `_id`                &lt;int&gt; 17735003, 17735002, 17735000, 17734995, 17734994
+#&gt; $ uuid                 &lt;chr&gt; &quot;5388c680d19148828ea45913af820f30&quot;, &quot;5388c680…
+#&gt; $ `__version__`        &lt;chr&gt; &quot;vW6fMPTWKJmBfdSRM7jd4V&quot;, &quot;vW6fMPTWKJmBfdSRM7jd4V…
+#&gt; $ instanceID           &lt;chr&gt; &quot;uuid:03093de4-e32c-41b4-8f86-bd98f0cfd4e5&quot;, &quot;uui…
+#&gt; $ `_xform_id_string`   &lt;chr&gt; &quot;aYuTZn9vegi3Z49MXwKjep&quot;, &quot;aYuTZn9vegi3Z49MXwKjep…
+#&gt; $ `_uuid`              &lt;chr&gt; &quot;03093de4-e32c-41b4-8f86-bd98f0cfd4e5&quot;, &quot;f3d0f43c…
+#&gt; $ `_status`            &lt;chr&gt; &quot;submitted_via_web&quot;, &quot;submitted_via_web&quot;, &quot;submit…
+#&gt; $ `_submission_time`   &lt;dttm&gt; 2022-01-07 10:40:12, 2022-01-07 10:39:57, 2022-01…
+#&gt; $ `_validation_status` &lt;chr&gt; NA, NA, NA, NA, NA
+#&gt; $ `_submitted_by`      &lt;lgl&gt; NA, NA, NA, NA, NA</code></pre>
+<p>If the <code>lang</code> parameter is not specified, the default
+language is used. In this project, the default language is
+<code>English (en)</code>.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a>df_default <span class="ot">&lt;-</span> <span class="fu">kobo_data</span>(asset)</span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a><span class="fu">all.equal</span>(df_default, df_en)</span></code></pre></div>
+<pre><code>#&gt; [1] TRUE</code></pre>
+</div>
+<div id="accessing-variable-labels" class="section level3">
+<h3>Accessing variable labels</h3>
+<p>You can use the <code>var_label</code> function from the
+<code>labelled</code> package to access question labels.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="fu">library</span>(labelled)</span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a><span class="fu">var_label</span>(df_en<span class="sc">$</span>full_name)</span>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a><span class="co">#&gt; [1] &quot;What is your name?&quot;</span></span>
+<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a><span class="fu">var_label</span>(df_fr<span class="sc">$</span>full_name)</span>
+<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Quel est votre nom ?&quot;</span></span>
+<span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a><span class="fu">var_label</span>(df_ar<span class="sc">$</span>full_name)</span>
+<span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a><span class="co">#&gt; [1] &quot;ما اسمك ؟&quot;</span></span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="fu">var_label</span>(df_en<span class="sc">$</span>pet_yesno)</span>
+<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Do you have any pet?&quot;</span></span>
+<span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a><span class="fu">var_label</span>(df_fr<span class="sc">$</span>pet_yesno)</span>
+<span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Avez-vous un animal de compagnie ?&quot;</span></span>
+<span id="cb9-5"><a href="#cb9-5" tabindex="-1"></a><span class="fu">var_label</span>(df_ar<span class="sc">$</span>pet_yesno)</span>
+<span id="cb9-6"><a href="#cb9-6" tabindex="-1"></a><span class="co">#&gt; [1] &quot;هل تمتلك حيوانا أليفا ؟&quot;</span></span></code></pre></div>
+</div>
+<div id="variable-labels-as-column-names" class="section level3">
+<h3>Variable labels as column names</h3>
+<p>The <code>kobo_data</code> function has an additional parameter
+<code>colnames_label</code> (default is <code>FALSE</code>) that allows
+you to use the variable labels as column names. While it is not
+recommended for data analysis, it can be useful when exporting your
+<code>data.frame</code> to a spreadsheet. This feature is already
+available in the traditional <code>KoboToolbox</code> export tools.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a><span class="fu">kobo_data</span>(asset_ml,</span>
+<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a>          <span class="at">colnames_label =</span> <span class="cn">TRUE</span>, <span class="at">lang =</span> <span class="st">&quot;Arabic (ar)&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb10-3"><a href="#cb10-3" tabindex="-1"></a><span class="fu">names</span>()</span></code></pre></div>
+<pre><code>#&gt;  [1] &quot;start&quot;                   &quot;end&quot;                    
+#&gt;  [3] &quot;today&quot;                   &quot;ما اسمك ؟&quot;              
+#&gt;  [5] &quot;هل تمتلك حيوانا أليفا ؟&quot; &quot;_id&quot;                    
+#&gt;  [7] &quot;uuid&quot;                    &quot;__version__&quot;            
+#&gt;  [9] &quot;instanceID&quot;              &quot;_xform_id_string&quot;       
+#&gt; [11] &quot;_uuid&quot;                   &quot;_status&quot;                
+#&gt; [13] &quot;_submission_time&quot;        &quot;_validation_status&quot;     
+#&gt; [15] &quot;_submitted_by&quot;</code></pre>
+</div>
+<div id="accessing-labels-from-select_one-question-type" class="section level3">
+<h3>Accessing labels from <code>select_one</code> question type</h3>
+<p>The <code>to_factor</code> function can convert the values of
+single-choice questions into labels.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a><span class="fu">table</span>(<span class="fu">to_factor</span>(df_en<span class="sc">$</span>pet_yesno))</span>
+<span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb12-3"><a href="#cb12-3" tabindex="-1"></a><span class="co">#&gt; Yes  No </span></span>
+<span id="cb12-4"><a href="#cb12-4" tabindex="-1"></a><span class="co">#&gt;   3   2</span></span>
+<span id="cb12-5"><a href="#cb12-5" tabindex="-1"></a><span class="fu">table</span>(<span class="fu">to_factor</span>(df_fr<span class="sc">$</span>pet_yesno))</span>
+<span id="cb12-6"><a href="#cb12-6" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb12-7"><a href="#cb12-7" tabindex="-1"></a><span class="co">#&gt; Oui Non </span></span>
+<span id="cb12-8"><a href="#cb12-8" tabindex="-1"></a><span class="co">#&gt;   3   2</span></span>
+<span id="cb12-9"><a href="#cb12-9" tabindex="-1"></a><span class="fu">table</span>(<span class="fu">to_factor</span>(df_ar<span class="sc">$</span>pet_yesno))</span>
+<span id="cb12-10"><a href="#cb12-10" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb12-11"><a href="#cb12-11" tabindex="-1"></a><span class="co">#&gt; نعم  لا </span></span>
+<span id="cb12-12"><a href="#cb12-12" tabindex="-1"></a><span class="co">#&gt;   3   2</span></span></code></pre></div>
+<p>If you prefer character values over factors, you can use
+<code>to_character</code> to have the labels in character format instead
+of factors.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a><span class="fu">count</span>(df_ar, <span class="at">pet_yesno_ar =</span> <span class="fu">to_character</span>(pet_yesno))</span>
+<span id="cb13-2"><a href="#cb13-2" tabindex="-1"></a><span class="co">#&gt; # A tibble: 2 × 2</span></span>
+<span id="cb13-3"><a href="#cb13-3" tabindex="-1"></a><span class="co">#&gt;   pet_yesno_ar     n</span></span>
+<span id="cb13-4"><a href="#cb13-4" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;        &lt;int&gt;</span></span>
+<span id="cb13-5"><a href="#cb13-5" tabindex="-1"></a><span class="co">#&gt; 1 لا               2</span></span>
+<span id="cb13-6"><a href="#cb13-6" tabindex="-1"></a><span class="co">#&gt; 2 نعم              3</span></span></code></pre></div>
+</div>
+<div id="accessing-labels-for-select_multiple-question-type" class="section level3">
+<h3>Accessing labels for <code>select_multiple</code> question type</h3>
+<p>Labels from <code>select_multiple</code> is also accessible using the
+<code>kobo_data</code> parameter <code>select_multiple_label</code>.
+Let’s show this new feature, with the following form:</p>
+<ul>
+<li><strong>Survey questions</strong></li>
+</ul>
+<table>
+<thead>
+<tr class="header">
+<th>type</th>
+<th>name</th>
+<th>label::English (en)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>start</td>
+<td>start</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>end</td>
+<td>end</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>today</td>
+<td>today</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>text</td>
+<td>full_name</td>
+<td>What is your name?</td>
+</tr>
+<tr class="odd">
+<td>select_multiple pet</td>
+<td>pet_type</td>
+<td>What type of pet do you own</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>Choices</strong></li>
+</ul>
+<table>
+<thead>
+<tr class="header">
+<th>list_name</th>
+<th>name</th>
+<th>label::English (en)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>pet</td>
+<td>1</td>
+<td>rabbit</td>
+</tr>
+<tr class="even">
+<td>pet</td>
+<td>2</td>
+<td>chicken</td>
+</tr>
+<tr class="odd">
+<td>pet</td>
+<td>3</td>
+<td>dog</td>
+</tr>
+<tr class="even">
+<td>pet</td>
+<td>4</td>
+<td>cat</td>
+</tr>
+<tr class="odd">
+<td>pet</td>
+<td>5</td>
+<td>turtle</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a>data_sm <span class="ot">&lt;-</span> <span class="fu">kobo_data</span>(uid)</span>
+<span id="cb14-2"><a href="#cb14-2" tabindex="-1"></a><span class="fu">glimpse</span>(data_sm)</span></code></pre></div>
+<pre><code>#&gt; Rows: 5
+#&gt; Columns: 21
+#&gt; $ start                &lt;dttm&gt; 2022-05-09 18:31:40, 2022-05-09 18:31:53, 2022-0…
+#&gt; $ end                  &lt;dttm&gt; 2022-05-09 18:35:12, 2022-05-09 18:34:59, 2022-0…
+#&gt; $ today                &lt;date&gt; 2022-05-09, 2022-05-09, 2022-05-09, 2022-05-09, …
+#&gt; $ full_name            &lt;chr&gt; &quot;Rufus&quot;, &quot;Romulus&quot;, &quot;Remus&quot;, &quot;Joe&quot;, &quot;Moh&quot;
+#&gt; $ pet_type             &lt;chr&gt; &quot;3 4&quot;, &quot;4&quot;, &quot;5&quot;, NA, &quot;3 4 5&quot;
+#&gt; $ pet_type_1           &lt;int&gt; 0, 0, 0, NA, 0
+#&gt; $ pet_type_2           &lt;int&gt; 0, 0, 0, NA, 0
+#&gt; $ pet_type_3           &lt;int&gt; 1, 0, 0, NA, 1
+#&gt; $ pet_type_4           &lt;int&gt; 1, 1, 0, NA, 1
+#&gt; $ pet_type_5           &lt;int&gt; 0, 0, 1, NA, 1
+#&gt; $ `_id`                &lt;int&gt; 20939261, 20939265, 20939278, 20939288, 20939301
+#&gt; $ instanceID           &lt;chr&gt; &quot;uuid:147d4f30-7459-42f7-818f-b44f47b2cca7&quot;, &quot;uui…
+#&gt; $ deprecatedID         &lt;chr&gt; &quot;uuid:6840ad57-d9f7-4557-b1f2-11af21e5b0cd&quot;, &quot;uui…
+#&gt; $ uuid                 &lt;chr&gt; &quot;5c0d08e4deda4a7fbc9634f5e8aba62f&quot;, &quot;5c0d08e4deda…
+#&gt; $ `__version__`        &lt;chr&gt; &quot;vjPe5qiVxTmyviYSrQE3x4&quot;, &quot;vjPe5qiVxTmyviYSrQE3x4…
+#&gt; $ `_xform_id_string`   &lt;chr&gt; &quot;atbUaNGu5PWR2u4tNDsYaH&quot;, &quot;atbUaNGu5PWR2u4tNDsYaH…
+#&gt; $ `_uuid`              &lt;chr&gt; &quot;147d4f30-7459-42f7-818f-b44f47b2cca7&quot;, &quot;6f67ede0…
+#&gt; $ `_status`            &lt;chr&gt; &quot;submitted_via_web&quot;, &quot;submitted_via_web&quot;, &quot;submit…
+#&gt; $ `_submission_time`   &lt;dttm&gt; 2022-05-09 18:32:03, 2022-05-09 18:32:10, 2022-05…
+#&gt; $ `_validation_status` &lt;chr&gt; NA, NA, NA, NA, NA
+#&gt; $ `_submitted_by`      &lt;lgl&gt; NA, NA, NA, NA, NA</code></pre>
+<p>The column <code>pet_type</code> contains values (<code>1</code> to
+<code>5</code>) instead of the labels (<code>dog</code>,
+<code>cat</code>, etc.). Now, let’s set the new
+<code>select_multiple_label</code> to <code>TRUE</code> and read again
+the data.</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a>data_sm_label <span class="ot">&lt;-</span> <span class="fu">kobo_data</span>(uid,</span>
+<span id="cb16-2"><a href="#cb16-2" tabindex="-1"></a>                           <span class="at">select_multiple_label =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb16-3"><a href="#cb16-3" tabindex="-1"></a><span class="fu">glimpse</span>(data_sm_label)</span></code></pre></div>
+<pre><code>#&gt; Rows: 5
+#&gt; Columns: 21
+#&gt; $ start                &lt;dttm&gt; 2022-05-09 18:31:40, 2022-05-09 18:31:53, 2022-0…
+#&gt; $ end                  &lt;dttm&gt; 2022-05-09 18:35:12, 2022-05-09 18:34:59, 2022-0…
+#&gt; $ today                &lt;date&gt; 2022-05-09, 2022-05-09, 2022-05-09, 2022-05-09, …
+#&gt; $ full_name            &lt;chr&gt; &quot;Rufus&quot;, &quot;Romulus&quot;, &quot;Remus&quot;, &quot;Joe&quot;, &quot;Moh&quot;
+#&gt; $ pet_type             &lt;chr&gt; &quot;dog cat&quot;, &quot;cat&quot;, &quot;turtle&quot;, NA, &quot;dog cat turtle&quot;
+#&gt; $ pet_type_1           &lt;int&gt; 0, 0, 0, NA, 0
+#&gt; $ pet_type_2           &lt;int&gt; 0, 0, 0, NA, 0
+#&gt; $ pet_type_3           &lt;int&gt; 1, 0, 0, NA, 1
+#&gt; $ pet_type_4           &lt;int&gt; 1, 1, 0, NA, 1
+#&gt; $ pet_type_5           &lt;int&gt; 0, 0, 1, NA, 1
+#&gt; $ `_id`                &lt;int&gt; 20939261, 20939265, 20939278, 20939288, 20939301
+#&gt; $ instanceID           &lt;chr&gt; &quot;uuid:147d4f30-7459-42f7-818f-b44f47b2cca7&quot;, &quot;uui…
+#&gt; $ deprecatedID         &lt;chr&gt; &quot;uuid:6840ad57-d9f7-4557-b1f2-11af21e5b0cd&quot;, &quot;uui…
+#&gt; $ uuid                 &lt;chr&gt; &quot;5c0d08e4deda4a7fbc9634f5e8aba62f&quot;, &quot;5c0d08e4deda…
+#&gt; $ `__version__`        &lt;chr&gt; &quot;vjPe5qiVxTmyviYSrQE3x4&quot;, &quot;vjPe5qiVxTmyviYSrQE3x4…
+#&gt; $ `_xform_id_string`   &lt;chr&gt; &quot;atbUaNGu5PWR2u4tNDsYaH&quot;, &quot;atbUaNGu5PWR2u4tNDsYaH…
+#&gt; $ `_uuid`              &lt;chr&gt; &quot;147d4f30-7459-42f7-818f-b44f47b2cca7&quot;, &quot;6f67ede0…
+#&gt; $ `_status`            &lt;chr&gt; &quot;submitted_via_web&quot;, &quot;submitted_via_web&quot;, &quot;submit…
+#&gt; $ `_submission_time`   &lt;dttm&gt; 2022-05-09 18:32:03, 2022-05-09 18:32:10, 2022-05…
+#&gt; $ `_validation_status` &lt;chr&gt; NA, NA, NA, NA, NA
+#&gt; $ `_submitted_by`      &lt;lgl&gt; NA, NA, NA, NA, NA</code></pre>
+<p>We can now see the <code>labels</code> (<code>dog</code>,
+<code>cat</code>, etc.) instead of the values (<code>1</code> to
+<code>5</code>) for the <code>pet_type</code> question.</p>
+<p>Variable labels have been improved for all the dummy variables
+related to the <code>select_multiple</code> question (whether or not you
+use the <code>select_multiple_label</code> parameter).</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" tabindex="-1"></a><span class="fu">var_label</span>(data_sm_label)</span>
+<span id="cb18-2"><a href="#cb18-2" tabindex="-1"></a><span class="co">#&gt; $start</span></span>
+<span id="cb18-3"><a href="#cb18-3" tabindex="-1"></a><span class="co">#&gt; [1] &quot;start&quot;</span></span>
+<span id="cb18-4"><a href="#cb18-4" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb18-5"><a href="#cb18-5" tabindex="-1"></a><span class="co">#&gt; $end</span></span>
+<span id="cb18-6"><a href="#cb18-6" tabindex="-1"></a><span class="co">#&gt; [1] &quot;end&quot;</span></span>
+<span id="cb18-7"><a href="#cb18-7" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb18-8"><a href="#cb18-8" tabindex="-1"></a><span class="co">#&gt; $today</span></span>
+<span id="cb18-9"><a href="#cb18-9" tabindex="-1"></a><span class="co">#&gt; [1] &quot;today&quot;</span></span>
+<span id="cb18-10"><a href="#cb18-10" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb18-11"><a href="#cb18-11" tabindex="-1"></a><span class="co">#&gt; $full_name</span></span>
+<span id="cb18-12"><a href="#cb18-12" tabindex="-1"></a><span class="co">#&gt; [1] &quot;What is your name?&quot;</span></span>
+<span id="cb18-13"><a href="#cb18-13" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb18-14"><a href="#cb18-14" tabindex="-1"></a><span class="co">#&gt; $pet_type</span></span>
+<span id="cb18-15"><a href="#cb18-15" tabindex="-1"></a><span class="co">#&gt; [1] &quot;What type of pet do you own ?&quot;</span></span>
+<span id="cb18-16"><a href="#cb18-16" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb18-17"><a href="#cb18-17" tabindex="-1"></a><span class="co">#&gt; $pet_type_1</span></span>
+<span id="cb18-18"><a href="#cb18-18" tabindex="-1"></a><span class="co">#&gt; [1] &quot;What type of pet do you own ?::rabbit&quot;</span></span>
+<span id="cb18-19"><a href="#cb18-19" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb18-20"><a href="#cb18-20" tabindex="-1"></a><span class="co">#&gt; $pet_type_2</span></span>
+<span id="cb18-21"><a href="#cb18-21" tabindex="-1"></a><span class="co">#&gt; [1] &quot;What type of pet do you own ?::chicken&quot;</span></span>
+<span id="cb18-22"><a href="#cb18-22" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb18-23"><a href="#cb18-23" tabindex="-1"></a><span class="co">#&gt; $pet_type_3</span></span>
+<span id="cb18-24"><a href="#cb18-24" tabindex="-1"></a><span class="co">#&gt; [1] &quot;What type of pet do you own ?::dog&quot;</span></span>
+<span id="cb18-25"><a href="#cb18-25" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb18-26"><a href="#cb18-26" tabindex="-1"></a><span class="co">#&gt; $pet_type_4</span></span>
+<span id="cb18-27"><a href="#cb18-27" tabindex="-1"></a><span class="co">#&gt; [1] &quot;What type of pet do you own ?::cat&quot;</span></span>
+<span id="cb18-28"><a href="#cb18-28" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb18-29"><a href="#cb18-29" tabindex="-1"></a><span class="co">#&gt; $pet_type_5</span></span>
+<span id="cb18-30"><a href="#cb18-30" tabindex="-1"></a><span class="co">#&gt; [1] &quot;What type of pet do you own ?::turtle&quot;</span></span>
+<span id="cb18-31"><a href="#cb18-31" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb18-32"><a href="#cb18-32" tabindex="-1"></a><span class="co">#&gt; $`_id`</span></span>
+<span id="cb18-33"><a href="#cb18-33" tabindex="-1"></a><span class="co">#&gt; [1] &quot;_id&quot;</span></span>
+<span id="cb18-34"><a href="#cb18-34" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb18-35"><a href="#cb18-35" tabindex="-1"></a><span class="co">#&gt; $instanceID</span></span>
+<span id="cb18-36"><a href="#cb18-36" tabindex="-1"></a><span class="co">#&gt; [1] &quot;instanceID&quot;</span></span>
+<span id="cb18-37"><a href="#cb18-37" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb18-38"><a href="#cb18-38" tabindex="-1"></a><span class="co">#&gt; $deprecatedID</span></span>
+<span id="cb18-39"><a href="#cb18-39" tabindex="-1"></a><span class="co">#&gt; [1] &quot;deprecatedID&quot;</span></span>
+<span id="cb18-40"><a href="#cb18-40" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb18-41"><a href="#cb18-41" tabindex="-1"></a><span class="co">#&gt; $uuid</span></span>
+<span id="cb18-42"><a href="#cb18-42" tabindex="-1"></a><span class="co">#&gt; [1] &quot;uuid&quot;</span></span>
+<span id="cb18-43"><a href="#cb18-43" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb18-44"><a href="#cb18-44" tabindex="-1"></a><span class="co">#&gt; $`__version__`</span></span>
+<span id="cb18-45"><a href="#cb18-45" tabindex="-1"></a><span class="co">#&gt; [1] &quot;__version__&quot;</span></span>
+<span id="cb18-46"><a href="#cb18-46" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb18-47"><a href="#cb18-47" tabindex="-1"></a><span class="co">#&gt; $`_xform_id_string`</span></span>
+<span id="cb18-48"><a href="#cb18-48" tabindex="-1"></a><span class="co">#&gt; [1] &quot;_xform_id_string&quot;</span></span>
+<span id="cb18-49"><a href="#cb18-49" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb18-50"><a href="#cb18-50" tabindex="-1"></a><span class="co">#&gt; $`_uuid`</span></span>
+<span id="cb18-51"><a href="#cb18-51" tabindex="-1"></a><span class="co">#&gt; [1] &quot;_uuid&quot;</span></span>
+<span id="cb18-52"><a href="#cb18-52" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb18-53"><a href="#cb18-53" tabindex="-1"></a><span class="co">#&gt; $`_status`</span></span>
+<span id="cb18-54"><a href="#cb18-54" tabindex="-1"></a><span class="co">#&gt; [1] &quot;_status&quot;</span></span>
+<span id="cb18-55"><a href="#cb18-55" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb18-56"><a href="#cb18-56" tabindex="-1"></a><span class="co">#&gt; $`_submission_time`</span></span>
+<span id="cb18-57"><a href="#cb18-57" tabindex="-1"></a><span class="co">#&gt; [1] &quot;_submission_time&quot;</span></span>
+<span id="cb18-58"><a href="#cb18-58" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb18-59"><a href="#cb18-59" tabindex="-1"></a><span class="co">#&gt; $`_validation_status`</span></span>
+<span id="cb18-60"><a href="#cb18-60" tabindex="-1"></a><span class="co">#&gt; [1] &quot;_validation_status&quot;</span></span>
+<span id="cb18-61"><a href="#cb18-61" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb18-62"><a href="#cb18-62" tabindex="-1"></a><span class="co">#&gt; $`_submitted_by`</span></span>
+<span id="cb18-63"><a href="#cb18-63" tabindex="-1"></a><span class="co">#&gt; [1] &quot;_submitted_by&quot;</span></span></code></pre></div>
+<p>Most of these functions come from the <code>labelled</code> package,
+you can explore this package further through its <a href="https://larmarange.github.io/labelled/">documentation</a>.</p>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

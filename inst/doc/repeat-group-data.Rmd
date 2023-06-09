@@ -1,0 +1,191 @@
+---
+title: "Loading Data with Repeating Groups"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Loading Data with Repeating Groups}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  message = FALSE,
+  warning = FALSE,
+  echo = TRUE,
+  comment = "#>"
+)
+```
+
+`KoboToolbox` enables grouping of questions, allowing them to be answered multiple times. This feature is particularly useful during household surveys where a set of questions is designed to be answered by each member of the household.
+
+## Loading data
+
+`KoboToolbox` implements this feature by incorporating the concept of [`repeat group`](https://support.kobotoolbox.org/group_repeat.html), enabling the repetition of a group of questions.
+This method involves enclosing the questions intended for repetition within a `begin_repeat`/`end_repeat` loop. Furthermore, `repeat group` allows for nesting, thus enabling the repetition of a question group within another `repeat group`. This concept can be demonstrated using the project and associated form below.
+
+```{r setup, echo = FALSE}
+library(robotoolbox)
+library(dplyr)
+library(dm)
+```
+
+
+```{r asset_list, echo = FALSE}
+l <- asset_list
+```
+
+- **Survey questions**
+
+| type                 | name              | label::English (en)                              | label::Francais (fr)                                  | repeat_count    | calculation                                    |
+|:---------------------|:------------------|:-------------------------------------------------|:------------------------------------------------------|:----------------|:-----------------------------------------------|
+| start                | start             |                                                  |                                                       |                 |                                                |
+| end                  | end               |                                                  |                                                       |                 |                                                |
+| today                | today             |                                                  |                                                       |                 |                                                |
+| **begin_repeat**         | demo              | Demographic Characteristics                      | Caracteristique Demographique                         |                 |                                                |
+| text                 | name              | Name                                             | Nom                                                   |                 |                                                |
+| integer              | age               | Age                                              | Age                                                   |                 |                                                |
+| select_one sex       | sex               | Sex                                              | Sexe                                                  |                 |                                                |
+| integer              | hobby             | How many hobbies does \${name} have?              | Combien de hobbies \${name} a ?                        |                 |                                                |
+| select_one yesno     | morelang          | Does \${name} speak more than one language?       | Est-ce que \${name} parle plus d'une langue ?          |                 |                                                |
+| calculate            | name_individual   |                                                  |                                                       |                 | indexed-repeat(\${name}, \${demo}, position(..)) |
+| **begin_repeat**         | hobbies_list      | List of Hobbies                                  | Liste de hobbies                                      | \${hobby}        |                                                |
+| text                 | hobbies           | Hobbies of \${name_individual}                    | Hobbies de \${name_individual}                         |                 |                                                |
+| **end_repeat**           |                   |                                                  |                                                       |                 |                                                |
+| **begin_repeat**         | lang_list         | List of Languages                                | Liste de langues                                      | \${morelang}     |                                                |
+| select_multiple lang | langs             | Languages spoken by \${name_individual}           | Langue parle par \${name_individual}                   |                 |                                                |
+| **end_repeat**           |                   |                                                  |                                                       |                 |                                                |
+| **end_repeat**           |                   |                                                  |                                                       |                 |                                                |
+| calculate            | family_count      |                                                  |                                                       |                 | count(\${demo})                                 |
+| note                 | family_count_note | Number of family members: \${family_count}        | Nombre de membre dans la famille:  \${family_count}    |                 |                                                |
+| **begin_repeat**         | education         | Education information                            | Information sur l'education                           | \${family_count} |                                                |
+| calculate            | name_individual2  |                                                  |                                                       |                 | indexed-repeat(\${name}, \${demo}, position(..)) |
+| select_one edu_level | edu_level         | What is \${name_individual2}'s level of education | Quel est le niveau d'education de \${name_individual2} |                 |                                                |
+| **end_repeat**           |                   |                                                  |                                                       |                 |                                                |
+
+
+- **Choices**
+
+|list_name | name|label::English (en)      |label::Francais (fr) |
+|:---------|----:|:------------------------|:--------------------|
+|sex       |    1|Male                     |Homme                |
+|sex       |    2|Female                   |Femme                |
+|sex       |    3|Prefer not to say        |Prefere ne pas dire  |
+|edu_level |    1|Primary                  |Primaire             |
+|edu_level |    2|Secondary                |Secondaire           |
+|edu_level |    3|Higher Secondary & Above |Lycee et superieur   |
+|yesno     |    1|Yes                      |Oui                  |
+|yesno     |    0|No                       |Non                  |
+|lang      |    1|French                   |Francais             |
+|lang      |    2|Spanish                  |Espagnol             |
+|lang      |    3|Arabic                   |Arabe                |
+|lang      |   99|Other                    |Autre                |
+
+
+### Loading the survey
+
+The aforementioned survey, named `nested_roster`, was uploaded to the server. It can be accessed from the list of asset `asset_list`.
+
+```{r, eval = FALSE}
+library(robotoolbox)
+library(dplyr)
+asset_list <- kobo_asset_list()
+uid <- filter(asset_list, name == "nested_roster") |>
+  pull(uid)
+asset <- kobo_asset(uid)
+asset
+```
+
+```{r, echo = FALSE}
+asset <- asset_rg
+asset
+```
+
+### Extracting the data
+
+The output here deviates from a standard `data.frame`. It consists of a listing of each `repeat group` loop present in our form.
+
+```{r, eval = FALSE}
+df <- kobo_data(asset)
+df
+```
+
+```{r, echo = FALSE}
+df <- data_rg
+df
+```
+
+The output is a `dm` object, sourced from the the `dm` package.
+
+```{r, echo = FALSE}
+class(df)
+```
+
+## Manipulating `repeat group` as `dm` object
+
+A `dm` object, which is a list of interconnected `data.frame` instances, can be manipulated using the `dm` package.
+
+###  Visualizing the relationship between tables
+
+To comprehend the data storage structure, we can visualize the relationships among tables (repeat group loops) and the schema of the dataset. This schema can be depicted using the `dm_draw` function.
+
+```{r draw_data}
+library(dm)
+dm_draw(df)
+```
+
+### Number of rows of each table
+
+The `dm` package offers numerous helper functions for manipulating `dm` objects. For instance, the `dm_nrow` function can be used to ascertain the number of rows in each table.
+
+```{r nrow_data}
+dm_nrow(df)
+```
+
+### A `dm` object is a list of `data.frame`
+
+A `dm` object is a `list` of `data.frame`. Similar to any list of `data.frame`, you can extract each table (`data.frame`), and analyze it separately.
+The principal table, where you have the first `repeat group`, is termede as `main`.
+
+```{r access_specific1}
+glimpse(df$main)
+```
+
+The other tables are named following the names of their associated `repeat groups`. For instance, the `education` table is named after the `education` `repeat group`.
+
+```{r access_specific2}
+glimpse(df$education)
+```
+
+## Filtering data
+
+One key benefit of using the `dm` package is its capability to dynamically filter tables while maintaining their interconnections. For example, filtering the `main` table will automatically extend to the `education` and `demo` tables. As the `hobbies_list` and `lang_list` tables are linked to the `demo` table, they will be filtered as well.
+
+```{r filter_data}
+df |>
+  dm_filter(main = (`_index` == 2)) |>
+  dm_nrow()
+```
+
+## Joining tables
+
+In certain instances, analyzing joined data may prove simpler. The `dm_flatten_to_tbl` function can be used to join data safely while preserving its structure and the connections between tables. We can merge the `education` table with the `main` table using the `dm_flatten_to_tbl` function, with the operation starting from `education`.
+
+```{r join_two}
+df |>
+  dm_flatten_to_tbl(.start = education,
+                    .join = left_join) |>
+  glimpse()
+```
+
+This logic can be extended to create the widest possible table through a cascade of joins, commencing from a deeper table (`.start` argument) and ending at the main table. Taking `.start = hobbies_list` as an example, two joins will be performed: `hobbies_list` will be merged with the `demo` table, and subsequently, the `demo` table will be combined with the `main` table.
+
+```{r join_all}
+df |>
+  dm_flatten_to_tbl(.start = hobbies_list,
+                    .join = left_join,
+                    .recursive = TRUE) |>
+  glimpse()
+```
+
+You can gain extensive knowledge about the [`dm`](https://cran.r-project.org/package=dm) package by going through its detailed documentation.
