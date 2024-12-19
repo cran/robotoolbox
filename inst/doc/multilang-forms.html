@@ -49,7 +49,7 @@ overflow: visible;
 </style>
 <style type="text/css" data-origin="pandoc">
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -60,7 +60,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
 { counter-reset: source-line 0; }
@@ -341,7 +341,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 
 <p>During data collection, it is often necessary to translate survey
-forms into multiple languages. Forms in <code>KoboToolbox</code> allow
+forms into multiple languages. <code>KoboToolbox</code> forms allow
 users to easily add translations, which can be used to label questions
 and choice values in either single or multiple-choice questions.</p>
 <p><code>robotoolbox</code> provides the capability to access these
@@ -461,7 +461,7 @@ your <code>R</code> session, you can use its unique identifier
 #&gt;   Asset type: survey
 #&gt;   Asset owner: dickoa
 #&gt;   Created: 2022-01-07 10:37:19
-#&gt;   Last modified: 2022-01-07 10:37:36
+#&gt;   Last modified: 2023-09-07 07:27:34
 #&gt;   Submissions: 5</code></pre>
 </div>
 <div id="listing-available-languages" class="section level3">
@@ -481,22 +481,23 @@ check the spelling of each language using <code>kobo_lang</code>.</p>
 <span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a>df_ar <span class="ot">&lt;-</span> <span class="fu">kobo_data</span>(asset, <span class="at">lang =</span> <span class="st">&quot;Arabic (ar)&quot;</span>)</span>
 <span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a><span class="fu">glimpse</span>(df_en)</span></code></pre></div>
 <pre><code>#&gt; Rows: 5
-#&gt; Columns: 15
-#&gt; $ start                &lt;dttm&gt; 2022-01-07 10:39:47, 2022-01-07 10:39:37, 2022-0…
-#&gt; $ end                  &lt;dttm&gt; 2022-01-07 10:40:02, 2022-01-07 10:39:47, 2022-0…
+#&gt; Columns: 16
+#&gt; $ start                &lt;dttm&gt; 2022-01-07 10:39:37, 2022-01-07 10:39:47, 2022-0…
+#&gt; $ end                  &lt;dttm&gt; 2022-01-07 10:39:47, 2022-01-07 10:40:02, 2022-0…
 #&gt; $ today                &lt;date&gt; 2022-01-07, 2022-01-07, 2022-01-07, 2022-01-07, …
-#&gt; $ full_name            &lt;chr&gt; &quot;Fatim&quot;, &quot;Jean-Pierre&quot;, &quot;إبراهيم&quot;, &quot;Michelle&quot;, &quot;A…
-#&gt; $ pet_yesno            &lt;chr+lbl&gt; &quot;1&quot;, &quot;0&quot;, &quot;1&quot;, &quot;1&quot;, &quot;0&quot;
-#&gt; $ `_id`                &lt;int&gt; 17735003, 17735002, 17735000, 17734995, 17734994
+#&gt; $ full_name            &lt;chr&gt; &quot;Jean-Pierre&quot;, &quot;Fatim&quot;, &quot;Ahmad&quot;, &quot;Michelle&quot;, &quot;إبر…
+#&gt; $ pet_yesno            &lt;chr+lbl&gt; &quot;0&quot;, &quot;1&quot;, &quot;0&quot;, &quot;1&quot;, &quot;1&quot;
+#&gt; $ `_id`                &lt;int&gt; 17735002, 17735003, 17734994, 17734995, 17735000
 #&gt; $ uuid                 &lt;chr&gt; &quot;5388c680d19148828ea45913af820f30&quot;, &quot;5388c680…
 #&gt; $ `__version__`        &lt;chr&gt; &quot;vW6fMPTWKJmBfdSRM7jd4V&quot;, &quot;vW6fMPTWKJmBfdSRM7jd4V…
-#&gt; $ instanceID           &lt;chr&gt; &quot;uuid:03093de4-e32c-41b4-8f86-bd98f0cfd4e5&quot;, &quot;uui…
+#&gt; $ instanceID           &lt;chr&gt; &quot;uuid:f3d0f43c-049e-4be8-ba94-a97a7e111516&quot;, &quot;uui…
 #&gt; $ `_xform_id_string`   &lt;chr&gt; &quot;aYuTZn9vegi3Z49MXwKjep&quot;, &quot;aYuTZn9vegi3Z49MXwKjep…
-#&gt; $ `_uuid`              &lt;chr&gt; &quot;03093de4-e32c-41b4-8f86-bd98f0cfd4e5&quot;, &quot;f3d0f43c…
+#&gt; $ `_uuid`              &lt;chr&gt; &quot;f3d0f43c-049e-4be8-ba94-a97a7e111516&quot;, &quot;03093de4…
 #&gt; $ `_status`            &lt;chr&gt; &quot;submitted_via_web&quot;, &quot;submitted_via_web&quot;, &quot;submit…
-#&gt; $ `_submission_time`   &lt;dttm&gt; 2022-01-07 10:40:12, 2022-01-07 10:39:57, 2022-01…
+#&gt; $ `_submission_time`   &lt;dttm&gt; 2022-01-07 10:39:57, 2022-01-07 10:40:12, 2022-01…
 #&gt; $ `_validation_status` &lt;chr&gt; NA, NA, NA, NA, NA
-#&gt; $ `_submitted_by`      &lt;lgl&gt; NA, NA, NA, NA, NA</code></pre>
+#&gt; $ `_submitted_by`      &lt;lgl&gt; NA, NA, NA, NA, NA
+#&gt; $ `_attachments`       &lt;list&gt; &lt;NULL&gt;, &lt;NULL&gt;, &lt;NULL&gt;, &lt;NULL&gt;, &lt;NULL&gt;</code></pre>
 <p>If the <code>lang</code> parameter is not specified, the default
 language is used. In this project, the default language is
 <code>English (en)</code>.</p>
@@ -526,7 +527,7 @@ language is used. In this project, the default language is
 <h3>Variable labels as column names</h3>
 <p>The <code>kobo_data</code> function has an additional parameter
 <code>colnames_label</code> (default is <code>FALSE</code>) that allows
-you to use the variable labels as column names. While it is not
+you to use the variable labels as column names. While this is not
 recommended for data analysis, it can be useful when exporting your
 <code>data.frame</code> to a spreadsheet. This feature is already
 available in the traditional <code>KoboToolbox</code> export tools.</p>
@@ -540,7 +541,7 @@ available in the traditional <code>KoboToolbox</code> export tools.</p>
 #&gt;  [9] &quot;instanceID&quot;              &quot;_xform_id_string&quot;       
 #&gt; [11] &quot;_uuid&quot;                   &quot;_status&quot;                
 #&gt; [13] &quot;_submission_time&quot;        &quot;_validation_status&quot;     
-#&gt; [15] &quot;_submitted_by&quot;</code></pre>
+#&gt; [15] &quot;_submitted_by&quot;           &quot;_attachments&quot;</code></pre>
 </div>
 <div id="accessing-labels-from-select_one-question-type" class="section level3">
 <h3>Accessing labels from <code>select_one</code> question type</h3>
@@ -572,7 +573,7 @@ of factors.</p>
 <h3>Accessing labels for <code>select_multiple</code> question type</h3>
 <p>Labels from <code>select_multiple</code> is also accessible using the
 <code>kobo_data</code> parameter <code>select_multiple_label</code>.
-Let’s show this new feature, with the following form:</p>
+Let’s demonstrate this feature with the following form:</p>
 <ul>
 <li><strong>Survey questions</strong></li>
 </ul>
@@ -654,28 +655,29 @@ Let’s show this new feature, with the following form:</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a>data_sm <span class="ot">&lt;-</span> <span class="fu">kobo_data</span>(uid)</span>
 <span id="cb14-2"><a href="#cb14-2" tabindex="-1"></a><span class="fu">glimpse</span>(data_sm)</span></code></pre></div>
 <pre><code>#&gt; Rows: 5
-#&gt; Columns: 21
-#&gt; $ start                &lt;dttm&gt; 2022-05-09 18:31:40, 2022-05-09 18:31:53, 2022-0…
-#&gt; $ end                  &lt;dttm&gt; 2022-05-09 18:35:12, 2022-05-09 18:34:59, 2022-0…
+#&gt; Columns: 22
+#&gt; $ start                &lt;dttm&gt; 2022-05-09 18:32:50, 2022-05-09 18:32:33, 2022-0…
+#&gt; $ end                  &lt;dttm&gt; 2022-05-09 18:34:26, 2022-05-09 18:34:37, 2022-0…
 #&gt; $ today                &lt;date&gt; 2022-05-09, 2022-05-09, 2022-05-09, 2022-05-09, …
-#&gt; $ full_name            &lt;chr&gt; &quot;Rufus&quot;, &quot;Romulus&quot;, &quot;Remus&quot;, &quot;Joe&quot;, &quot;Moh&quot;
-#&gt; $ pet_type             &lt;chr&gt; &quot;3 4&quot;, &quot;4&quot;, &quot;5&quot;, NA, &quot;3 4 5&quot;
-#&gt; $ pet_type_1           &lt;int&gt; 0, 0, 0, NA, 0
-#&gt; $ pet_type_2           &lt;int&gt; 0, 0, 0, NA, 0
-#&gt; $ pet_type_3           &lt;int&gt; 1, 0, 0, NA, 1
-#&gt; $ pet_type_4           &lt;int&gt; 1, 1, 0, NA, 1
-#&gt; $ pet_type_5           &lt;int&gt; 0, 0, 1, NA, 1
-#&gt; $ `_id`                &lt;int&gt; 20939261, 20939265, 20939278, 20939288, 20939301
-#&gt; $ instanceID           &lt;chr&gt; &quot;uuid:147d4f30-7459-42f7-818f-b44f47b2cca7&quot;, &quot;uui…
-#&gt; $ deprecatedID         &lt;chr&gt; &quot;uuid:6840ad57-d9f7-4557-b1f2-11af21e5b0cd&quot;, &quot;uui…
+#&gt; $ full_name            &lt;chr&gt; &quot;Moh&quot;, &quot;Joe&quot;, &quot;Remus&quot;, &quot;Romulus&quot;, &quot;Rufus&quot;
+#&gt; $ pet_type             &lt;chr&gt; &quot;3 4 5&quot;, NA, &quot;5&quot;, &quot;4&quot;, &quot;3 4&quot;
+#&gt; $ pet_type_1           &lt;int&gt; 0, NA, 0, 0, 0
+#&gt; $ pet_type_2           &lt;int&gt; 0, NA, 0, 0, 0
+#&gt; $ pet_type_3           &lt;int&gt; 1, NA, 0, 0, 1
+#&gt; $ pet_type_4           &lt;int&gt; 1, NA, 0, 1, 1
+#&gt; $ pet_type_5           &lt;int&gt; 1, NA, 1, 0, 0
+#&gt; $ `_id`                &lt;int&gt; 20939301, 20939288, 20939278, 20939265, 20939261
+#&gt; $ instanceID           &lt;chr&gt; &quot;uuid:b72a497c-8fcf-43c4-825e-6f1fe7df40ce&quot;, &quot;uui…
+#&gt; $ deprecatedID         &lt;chr&gt; &quot;uuid:0bc30cb8-5584-45dc-9264-8c1aa14ad256&quot;, &quot;uui…
 #&gt; $ uuid                 &lt;chr&gt; &quot;5c0d08e4deda4a7fbc9634f5e8aba62f&quot;, &quot;5c0d08e4deda…
 #&gt; $ `__version__`        &lt;chr&gt; &quot;vjPe5qiVxTmyviYSrQE3x4&quot;, &quot;vjPe5qiVxTmyviYSrQE3x4…
 #&gt; $ `_xform_id_string`   &lt;chr&gt; &quot;atbUaNGu5PWR2u4tNDsYaH&quot;, &quot;atbUaNGu5PWR2u4tNDsYaH…
-#&gt; $ `_uuid`              &lt;chr&gt; &quot;147d4f30-7459-42f7-818f-b44f47b2cca7&quot;, &quot;6f67ede0…
+#&gt; $ `_uuid`              &lt;chr&gt; &quot;b72a497c-8fcf-43c4-825e-6f1fe7df40ce&quot;, &quot;a2e71f4e…
 #&gt; $ `_status`            &lt;chr&gt; &quot;submitted_via_web&quot;, &quot;submitted_via_web&quot;, &quot;submit…
-#&gt; $ `_submission_time`   &lt;dttm&gt; 2022-05-09 18:32:03, 2022-05-09 18:32:10, 2022-05…
+#&gt; $ `_submission_time`   &lt;dttm&gt; 2022-05-09 18:33:15, 2022-05-09 18:33:01, 2022-05…
 #&gt; $ `_validation_status` &lt;chr&gt; NA, NA, NA, NA, NA
-#&gt; $ `_submitted_by`      &lt;lgl&gt; NA, NA, NA, NA, NA</code></pre>
+#&gt; $ `_submitted_by`      &lt;lgl&gt; NA, NA, NA, NA, NA
+#&gt; $ `_attachments`       &lt;list&gt; &lt;NULL&gt;, &lt;NULL&gt;, &lt;NULL&gt;, &lt;NULL&gt;, &lt;NULL&gt;</code></pre>
 <p>The column <code>pet_type</code> contains values (<code>1</code> to
 <code>5</code>) instead of the labels (<code>dog</code>,
 <code>cat</code>, etc.). Now, let’s set the new
@@ -685,28 +687,29 @@ the data.</p>
 <span id="cb16-2"><a href="#cb16-2" tabindex="-1"></a>                           <span class="at">select_multiple_label =</span> <span class="cn">TRUE</span>)</span>
 <span id="cb16-3"><a href="#cb16-3" tabindex="-1"></a><span class="fu">glimpse</span>(data_sm_label)</span></code></pre></div>
 <pre><code>#&gt; Rows: 5
-#&gt; Columns: 21
-#&gt; $ start                &lt;dttm&gt; 2022-05-09 18:31:40, 2022-05-09 18:31:53, 2022-0…
-#&gt; $ end                  &lt;dttm&gt; 2022-05-09 18:35:12, 2022-05-09 18:34:59, 2022-0…
+#&gt; Columns: 22
+#&gt; $ start                &lt;dttm&gt; 2022-05-09 18:32:50, 2022-05-09 18:32:33, 2022-0…
+#&gt; $ end                  &lt;dttm&gt; 2022-05-09 18:34:26, 2022-05-09 18:34:37, 2022-0…
 #&gt; $ today                &lt;date&gt; 2022-05-09, 2022-05-09, 2022-05-09, 2022-05-09, …
-#&gt; $ full_name            &lt;chr&gt; &quot;Rufus&quot;, &quot;Romulus&quot;, &quot;Remus&quot;, &quot;Joe&quot;, &quot;Moh&quot;
-#&gt; $ pet_type             &lt;chr&gt; &quot;dog cat&quot;, &quot;cat&quot;, &quot;turtle&quot;, NA, &quot;dog cat turtle&quot;
-#&gt; $ pet_type_1           &lt;int&gt; 0, 0, 0, NA, 0
-#&gt; $ pet_type_2           &lt;int&gt; 0, 0, 0, NA, 0
-#&gt; $ pet_type_3           &lt;int&gt; 1, 0, 0, NA, 1
-#&gt; $ pet_type_4           &lt;int&gt; 1, 1, 0, NA, 1
-#&gt; $ pet_type_5           &lt;int&gt; 0, 0, 1, NA, 1
-#&gt; $ `_id`                &lt;int&gt; 20939261, 20939265, 20939278, 20939288, 20939301
-#&gt; $ instanceID           &lt;chr&gt; &quot;uuid:147d4f30-7459-42f7-818f-b44f47b2cca7&quot;, &quot;uui…
-#&gt; $ deprecatedID         &lt;chr&gt; &quot;uuid:6840ad57-d9f7-4557-b1f2-11af21e5b0cd&quot;, &quot;uui…
+#&gt; $ full_name            &lt;chr&gt; &quot;Moh&quot;, &quot;Joe&quot;, &quot;Remus&quot;, &quot;Romulus&quot;, &quot;Rufus&quot;
+#&gt; $ pet_type             &lt;chr&gt; &quot;dog cat turtle&quot;, NA, &quot;turtle&quot;, &quot;cat&quot;, &quot;dog cat&quot;
+#&gt; $ pet_type_1           &lt;int&gt; 0, NA, 0, 0, 0
+#&gt; $ pet_type_2           &lt;int&gt; 0, NA, 0, 0, 0
+#&gt; $ pet_type_3           &lt;int&gt; 1, NA, 0, 0, 1
+#&gt; $ pet_type_4           &lt;int&gt; 1, NA, 0, 1, 1
+#&gt; $ pet_type_5           &lt;int&gt; 1, NA, 1, 0, 0
+#&gt; $ `_id`                &lt;int&gt; 20939301, 20939288, 20939278, 20939265, 20939261
+#&gt; $ instanceID           &lt;chr&gt; &quot;uuid:b72a497c-8fcf-43c4-825e-6f1fe7df40ce&quot;, &quot;uui…
+#&gt; $ deprecatedID         &lt;chr&gt; &quot;uuid:0bc30cb8-5584-45dc-9264-8c1aa14ad256&quot;, &quot;uui…
 #&gt; $ uuid                 &lt;chr&gt; &quot;5c0d08e4deda4a7fbc9634f5e8aba62f&quot;, &quot;5c0d08e4deda…
 #&gt; $ `__version__`        &lt;chr&gt; &quot;vjPe5qiVxTmyviYSrQE3x4&quot;, &quot;vjPe5qiVxTmyviYSrQE3x4…
 #&gt; $ `_xform_id_string`   &lt;chr&gt; &quot;atbUaNGu5PWR2u4tNDsYaH&quot;, &quot;atbUaNGu5PWR2u4tNDsYaH…
-#&gt; $ `_uuid`              &lt;chr&gt; &quot;147d4f30-7459-42f7-818f-b44f47b2cca7&quot;, &quot;6f67ede0…
+#&gt; $ `_uuid`              &lt;chr&gt; &quot;b72a497c-8fcf-43c4-825e-6f1fe7df40ce&quot;, &quot;a2e71f4e…
 #&gt; $ `_status`            &lt;chr&gt; &quot;submitted_via_web&quot;, &quot;submitted_via_web&quot;, &quot;submit…
-#&gt; $ `_submission_time`   &lt;dttm&gt; 2022-05-09 18:32:03, 2022-05-09 18:32:10, 2022-05…
+#&gt; $ `_submission_time`   &lt;dttm&gt; 2022-05-09 18:33:15, 2022-05-09 18:33:01, 2022-05…
 #&gt; $ `_validation_status` &lt;chr&gt; NA, NA, NA, NA, NA
-#&gt; $ `_submitted_by`      &lt;lgl&gt; NA, NA, NA, NA, NA</code></pre>
+#&gt; $ `_submitted_by`      &lt;lgl&gt; NA, NA, NA, NA, NA
+#&gt; $ `_attachments`       &lt;list&gt; &lt;NULL&gt;, &lt;NULL&gt;, &lt;NULL&gt;, &lt;NULL&gt;, &lt;NULL&gt;</code></pre>
 <p>We can now see the <code>labels</code> (<code>dog</code>,
 <code>cat</code>, etc.) instead of the values (<code>1</code> to
 <code>5</code>) for the <code>pet_type</code> question.</p>
@@ -775,7 +778,10 @@ use the <code>select_multiple_label</code> parameter).</p>
 <span id="cb18-60"><a href="#cb18-60" tabindex="-1"></a><span class="co">#&gt; [1] &quot;_validation_status&quot;</span></span>
 <span id="cb18-61"><a href="#cb18-61" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb18-62"><a href="#cb18-62" tabindex="-1"></a><span class="co">#&gt; $`_submitted_by`</span></span>
-<span id="cb18-63"><a href="#cb18-63" tabindex="-1"></a><span class="co">#&gt; [1] &quot;_submitted_by&quot;</span></span></code></pre></div>
+<span id="cb18-63"><a href="#cb18-63" tabindex="-1"></a><span class="co">#&gt; [1] &quot;_submitted_by&quot;</span></span>
+<span id="cb18-64"><a href="#cb18-64" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb18-65"><a href="#cb18-65" tabindex="-1"></a><span class="co">#&gt; $`_attachments`</span></span>
+<span id="cb18-66"><a href="#cb18-66" tabindex="-1"></a><span class="co">#&gt; [1] &quot;_attachments&quot;</span></span></code></pre></div>
 <p>Most of these functions come from the <code>labelled</code> package,
 you can explore this package further through its <a href="https://larmarange.github.io/labelled/">documentation</a>.</p>
 </div>

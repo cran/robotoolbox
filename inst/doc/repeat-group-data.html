@@ -27,6 +27,26 @@ document.addEventListener('DOMContentLoaded', function(e) {
   }
 });
 </script>
+<style type="text/css">@layer htmltools {
+.html-fill-container {
+display: flex;
+flex-direction: column;
+
+min-height: 0;
+min-width: 0;
+}
+.html-fill-container > .html-fill-item {
+
+flex: 1 1 auto;
+min-height: 0;
+min-width: 0;
+}
+.html-fill-container > :not(.html-fill-item) {
+
+flex: 0 0 auto;
+}
+}
+</style>
 <script>(function() {
   // If window.HTMLWidgets is already defined, then use it; otherwise create a
   // new object. This allows preceding code to set options that affect the
@@ -1263,7 +1283,7 @@ overflow: visible;
 </style>
 <style type="text/css" data-origin="pandoc">
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -1274,7 +1294,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
 { counter-reset: source-line 0; }
@@ -1558,17 +1578,42 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 to be answered multiple times. This feature is particularly useful
 during household surveys where a set of questions is designed to be
 answered by each member of the household.</p>
+<p>Repeating groups are a powerful tool in survey design, offering
+several advantages:</p>
+<ol style="list-style-type: decimal">
+<li>Efficiency: A single set of questions can be used for multiple
+respondents.</li>
+<li>Flexibility: Surveys can accommodate varying numbers of
+respondents.</li>
+<li>Data consistency: The same questions are asked for each repetition,
+ensuring uniform data collection.</li>
+<li>Simplified analysis: The structured format facilitates easier data
+analysis across respondents.</li>
+</ol>
+<p>These benefits make repeating groups essential for surveys dealing
+with multi-member units like households, schools, or organizations.</p>
 <div id="loading-data" class="section level2">
 <h2>Loading data</h2>
 <p><code>KoboToolbox</code> implements this feature by incorporating the
 concept of <a href="https://support.kobotoolbox.org/group_repeat.html"><code>repeat group</code></a>,
-enabling the repetition of a group of questions. This method involves
-enclosing the questions intended for repetition within a
-<code>begin_repeat</code>/<code>end_repeat</code> loop. Furthermore,
-<code>repeat group</code> allows for nesting, thus enabling the
-repetition of a question group within another <code>repeat group</code>.
-This concept can be demonstrated using the project and associated form
-below.</p>
+enabling the repetition of a group of questions.</p>
+<p>In KoboToolbox forms, <code>begin_repeat</code> and
+<code>end_repeat</code> are special commands that define the boundaries
+of a repeating group:</p>
+<ul>
+<li><code>begin_repeat</code>: Marks the start of a group of questions
+that can be repeated multiple times.</li>
+<li><code>end_repeat</code>: Signals the end of the repeating
+group.</li>
+</ul>
+<p>Any questions placed between these commands will be repeated as a
+set, allowing for multiple responses to the same group of questions.
+This method involves enclosing the questions intended for repetition
+within a <code>begin_repeat</code>/<code>end_repeat</code> loop.
+Furthermore, <code>repeat group</code> allows for nesting, thus enabling
+the repetition of a question group within another
+<code>repeat group</code>. This concept can be demonstrated using the
+project and associated form below.</p>
 <ul>
 <li><strong>Survey questions</strong></li>
 </ul>
@@ -1873,18 +1918,32 @@ uploaded to the server. It can be accessed from the list of asset
 <code>asset_list</code>.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">library</span>(robotoolbox)</span>
 <span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a>asset_list <span class="ot">&lt;-</span> <span class="fu">kobo_asset_list</span>()</span>
-<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a>uid <span class="ot">&lt;-</span> <span class="fu">filter</span>(asset_list, name <span class="sc">==</span> <span class="st">&quot;nested_roster&quot;</span>) <span class="sc">|&gt;</span></span>
-<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a>  <span class="fu">pull</span>(uid)</span>
-<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a>asset <span class="ot">&lt;-</span> <span class="fu">kobo_asset</span>(uid)</span>
-<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a>asset</span></code></pre></div>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a><span class="co"># Retrieve a list of all assets (projects) from your KoboToolbox server</span></span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a>asset_list <span class="ot">&lt;-</span> <span class="fu">kobo_asset_list</span>()</span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a><span class="co"># Filter the asset list to find the specific project and get its unique identifier (uid)</span></span>
+<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a>uid <span class="ot">&lt;-</span> <span class="fu">filter</span>(asset_list, name <span class="sc">==</span> <span class="st">&quot;nested_roster&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a>  <span class="fu">pull</span>(uid)</span>
+<span id="cb1-10"><a href="#cb1-10" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" tabindex="-1"></a><span class="co"># Load the specific asset (project) using its uid</span></span>
+<span id="cb1-12"><a href="#cb1-12" tabindex="-1"></a>asset <span class="ot">&lt;-</span> <span class="fu">kobo_asset</span>(uid)</span>
+<span id="cb1-13"><a href="#cb1-13" tabindex="-1"></a>asset</span></code></pre></div>
 <pre><code>#&gt; &lt;robotoolbox asset&gt;  aANhxwX9S6BCsiYMgQj9kV 
 #&gt;   Asset name: nested_roster
 #&gt;   Asset type: survey
 #&gt;   Asset owner: dickoa
 #&gt;   Created: 2022-01-05 21:22:51
-#&gt;   Last modified: 2022-01-06 15:15:31
+#&gt;   Last modified: 2023-09-07 07:27:04
 #&gt;   Submissions: 3</code></pre>
+<p>In this code:</p>
+<ul>
+<li><p><code>kobo_asset_list()</code> retrieves a list of all assets
+(projects) available on your <code>KoboToolbox</code> server.</p></li>
+<li><p><code>kobo_asset()</code> loads a specific asset (project) using
+its unique identifier (<code>uid</code>), allowing you to work with that
+particular project data and metadata.</p></li>
+</ul>
 </div>
 <div id="extracting-the-data" class="section level3">
 <h3>Extracting the data</h3>
@@ -1895,12 +1954,27 @@ our form.</p>
 <span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>df</span></code></pre></div>
 <pre><code>#&gt; ── Metadata ────────────────────────────────────────────────────────────────────
 #&gt; Tables: `main`, `demo`, `hobbies_list`, `lang_list`, `education`
-#&gt; Columns: 49
+#&gt; Columns: 51
 #&gt; Primary keys: 5
 #&gt; Foreign keys: 4</code></pre>
-<p>The output is a <code>dm</code> object, sourced from the the
-<code>dm</code> package.</p>
 <pre><code>#&gt; [1] &quot;dm&quot;</code></pre>
+<p>The output is a <code>dm</code> object, sourced from the
+<code>dm</code> package. A <code>dm</code> object is a collection of
+related data frames that preserves the relationships between different
+levels of data in repeating groups. It’s particularly useful for
+repeating groups because:</p>
+<ol style="list-style-type: decimal">
+<li><p>It maintains the hierarchical structure of the data, reflecting
+how repeating groups are nested within the survey.</p></li>
+<li><p>It allows for efficient storage and manipulation of data from
+different levels of the survey without losing the relationships between
+these levels.</p></li>
+<li><p>It provides tools for working with related tables, making it
+easier to analyze data across different repeating groups.</p></li>
+</ol>
+<p>Using a <code>dm</code> object helps preserve the complex structure
+of surveys with repeating groups, allowing for more intuitive and
+accurate data analysis.</p>
 </div>
 </div>
 <div id="manipulating-repeat-group-as-dm-object" class="section level2">
@@ -1917,8 +1991,11 @@ dataset. This schema can be depicted using the <code>dm_draw</code>
 function.</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="fu">library</span>(dm)</span>
 <span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a><span class="fu">dm_draw</span>(df)</span></code></pre></div>
-<div class="grViz html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-e804f7ed155b45034ef2" style="width:288px;height:288px;"></div>
-<script type="application/json" data-for="htmlwidget-e804f7ed155b45034ef2">{"x":{"diagram":"#data_model\ndigraph {\ngraph [rankdir=LR tooltip=\"Data Model\" ]\n\nnode [margin=0 fontcolor = \"#444444\" ]\n\nedge [color = \"#555555\", arrowsize = 1, ]\n\npack=true\npackmode= \"node\"\n\n  \"demo\" [id = \"demo\", label = <<TABLE ALIGN=\"LEFT\" BORDER=\"1\" CELLBORDER=\"0\" CELLSPACING=\"0\" COLOR=\"#555555\">\n    <TR>\n      <TD COLSPAN=\"1\" BGCOLOR=\"#EFEBDD\" BORDER=\"0\"><FONT COLOR=\"#000000\">demo<\/FONT>\n<\/TD>\n    <\/TR>\n    <TR>\n      <TD ALIGN=\"LEFT\" BGCOLOR=\"#FFFFFF\" PORT=\"_index\"><U>_index<\/U><\/TD>\n    <\/TR>\n    <TR>\n      <TD ALIGN=\"LEFT\" BGCOLOR=\"#FFFFFF\" PORT=\"_parent_index\">_parent_index<\/TD>\n    <\/TR>\n  <\/TABLE>>, shape = \"plaintext\"] \n\n  \"education\" [id = \"education\", label = <<TABLE ALIGN=\"LEFT\" BORDER=\"1\" CELLBORDER=\"0\" CELLSPACING=\"0\" COLOR=\"#555555\">\n    <TR>\n      <TD COLSPAN=\"1\" BGCOLOR=\"#EFEBDD\" BORDER=\"0\"><FONT COLOR=\"#000000\">education<\/FONT>\n<\/TD>\n    <\/TR>\n    <TR>\n      <TD ALIGN=\"LEFT\" BGCOLOR=\"#FFFFFF\" PORT=\"_index\"><U>_index<\/U><\/TD>\n    <\/TR>\n    <TR>\n      <TD ALIGN=\"LEFT\" BGCOLOR=\"#FFFFFF\" PORT=\"_parent_index\">_parent_index<\/TD>\n    <\/TR>\n  <\/TABLE>>, shape = \"plaintext\"] \n\n  \"hobbies_list\" [id = \"hobbies_list\", label = <<TABLE ALIGN=\"LEFT\" BORDER=\"1\" CELLBORDER=\"0\" CELLSPACING=\"0\" COLOR=\"#555555\">\n    <TR>\n      <TD COLSPAN=\"1\" BGCOLOR=\"#EFEBDD\" BORDER=\"0\"><FONT COLOR=\"#000000\">hobbies_list<\/FONT>\n<\/TD>\n    <\/TR>\n    <TR>\n      <TD ALIGN=\"LEFT\" BGCOLOR=\"#FFFFFF\" PORT=\"_index\"><U>_index<\/U><\/TD>\n    <\/TR>\n    <TR>\n      <TD ALIGN=\"LEFT\" BGCOLOR=\"#FFFFFF\" PORT=\"_parent_index\">_parent_index<\/TD>\n    <\/TR>\n  <\/TABLE>>, shape = \"plaintext\"] \n\n  \"lang_list\" [id = \"lang_list\", label = <<TABLE ALIGN=\"LEFT\" BORDER=\"1\" CELLBORDER=\"0\" CELLSPACING=\"0\" COLOR=\"#555555\">\n    <TR>\n      <TD COLSPAN=\"1\" BGCOLOR=\"#EFEBDD\" BORDER=\"0\"><FONT COLOR=\"#000000\">lang_list<\/FONT>\n<\/TD>\n    <\/TR>\n    <TR>\n      <TD ALIGN=\"LEFT\" BGCOLOR=\"#FFFFFF\" PORT=\"_index\"><U>_index<\/U><\/TD>\n    <\/TR>\n    <TR>\n      <TD ALIGN=\"LEFT\" BGCOLOR=\"#FFFFFF\" PORT=\"_parent_index\">_parent_index<\/TD>\n    <\/TR>\n  <\/TABLE>>, shape = \"plaintext\"] \n\n  \"main\" [id = \"main\", label = <<TABLE ALIGN=\"LEFT\" BORDER=\"1\" CELLBORDER=\"0\" CELLSPACING=\"0\" COLOR=\"#555555\">\n    <TR>\n      <TD COLSPAN=\"1\" BGCOLOR=\"#EFEBDD\" BORDER=\"0\"><FONT COLOR=\"#000000\">main<\/FONT>\n<\/TD>\n    <\/TR>\n    <TR>\n      <TD ALIGN=\"LEFT\" BGCOLOR=\"#FFFFFF\" PORT=\"_index\"><U>_index<\/U><\/TD>\n    <\/TR>\n  <\/TABLE>>, shape = \"plaintext\"] \n\n\"demo\":\"_parent_index\"->\"main\":\"_index\" [id=\"demo_1\"]\n\"education\":\"_parent_index\"->\"main\":\"_index\" [id=\"education_1\"]\n\"hobbies_list\":\"_parent_index\"->\"demo\":\"_index\" [id=\"hobbies_list_1\"]\n\"lang_list\":\"_parent_index\"->\"demo\":\"_index\" [id=\"lang_list_1\"]\n}","config":{"engine":null,"options":null}},"evals":[],"jsHooks":[]}</script>
+<div class="grViz html-widget html-fill-item" id="htmlwidget-eea211aa4839a38d72a8" style="width:288px;height:288px;"></div>
+<script type="application/json" data-for="htmlwidget-eea211aa4839a38d72a8">{"x":{"diagram":"#data_model\ndigraph {\ngraph [rankdir=LR tooltip=\"Data Model\" ]\n\nnode [margin=0 fontcolor = \"#444444\" ]\n\nedge [color = \"#555555\", arrowsize = 1, ]\n\npack=true\npackmode= \"node\"\n\n  \"demo\" [id = \"demo\", label = <<TABLE ALIGN=\"LEFT\" BORDER=\"1\" CELLBORDER=\"0\" CELLSPACING=\"0\" COLOR=\"#555555\">\n    <TR>\n      <TD COLSPAN=\"1\" BGCOLOR=\"#EFEBDD\" BORDER=\"0\"><FONT COLOR=\"#000000\">demo<\/FONT>\n<\/TD>\n    <\/TR>\n    <TR>\n      <TD ALIGN=\"LEFT\" BGCOLOR=\"#FFFFFF\" PORT=\"_index\"><U>_index<\/U><\/TD>\n    <\/TR>\n    <TR>\n      <TD ALIGN=\"LEFT\" BGCOLOR=\"#FFFFFF\" PORT=\"_parent_index\">_parent_index<\/TD>\n    <\/TR>\n  <\/TABLE>>, shape = \"plaintext\"] \n\n  \"education\" [id = \"education\", label = <<TABLE ALIGN=\"LEFT\" BORDER=\"1\" CELLBORDER=\"0\" CELLSPACING=\"0\" COLOR=\"#555555\">\n    <TR>\n      <TD COLSPAN=\"1\" BGCOLOR=\"#EFEBDD\" BORDER=\"0\"><FONT COLOR=\"#000000\">education<\/FONT>\n<\/TD>\n    <\/TR>\n    <TR>\n      <TD ALIGN=\"LEFT\" BGCOLOR=\"#FFFFFF\" PORT=\"_index\"><U>_index<\/U><\/TD>\n    <\/TR>\n    <TR>\n      <TD ALIGN=\"LEFT\" BGCOLOR=\"#FFFFFF\" PORT=\"_parent_index\">_parent_index<\/TD>\n    <\/TR>\n  <\/TABLE>>, shape = \"plaintext\"] \n\n  \"hobbies_list\" [id = \"hobbies_list\", label = <<TABLE ALIGN=\"LEFT\" BORDER=\"1\" CELLBORDER=\"0\" CELLSPACING=\"0\" COLOR=\"#555555\">\n    <TR>\n      <TD COLSPAN=\"1\" BGCOLOR=\"#EFEBDD\" BORDER=\"0\"><FONT COLOR=\"#000000\">hobbies_list<\/FONT>\n<\/TD>\n    <\/TR>\n    <TR>\n      <TD ALIGN=\"LEFT\" BGCOLOR=\"#FFFFFF\" PORT=\"_index\"><U>_index<\/U><\/TD>\n    <\/TR>\n    <TR>\n      <TD ALIGN=\"LEFT\" BGCOLOR=\"#FFFFFF\" PORT=\"_parent_index\">_parent_index<\/TD>\n    <\/TR>\n  <\/TABLE>>, shape = \"plaintext\"] \n\n  \"lang_list\" [id = \"lang_list\", label = <<TABLE ALIGN=\"LEFT\" BORDER=\"1\" CELLBORDER=\"0\" CELLSPACING=\"0\" COLOR=\"#555555\">\n    <TR>\n      <TD COLSPAN=\"1\" BGCOLOR=\"#EFEBDD\" BORDER=\"0\"><FONT COLOR=\"#000000\">lang_list<\/FONT>\n<\/TD>\n    <\/TR>\n    <TR>\n      <TD ALIGN=\"LEFT\" BGCOLOR=\"#FFFFFF\" PORT=\"_index\"><U>_index<\/U><\/TD>\n    <\/TR>\n    <TR>\n      <TD ALIGN=\"LEFT\" BGCOLOR=\"#FFFFFF\" PORT=\"_parent_index\">_parent_index<\/TD>\n    <\/TR>\n  <\/TABLE>>, shape = \"plaintext\"] \n\n  \"main\" [id = \"main\", label = <<TABLE ALIGN=\"LEFT\" BORDER=\"1\" CELLBORDER=\"0\" CELLSPACING=\"0\" COLOR=\"#555555\">\n    <TR>\n      <TD COLSPAN=\"1\" BGCOLOR=\"#EFEBDD\" BORDER=\"0\"><FONT COLOR=\"#000000\">main<\/FONT>\n<\/TD>\n    <\/TR>\n    <TR>\n      <TD ALIGN=\"LEFT\" BGCOLOR=\"#FFFFFF\" PORT=\"_index\"><U>_index<\/U><\/TD>\n    <\/TR>\n  <\/TABLE>>, shape = \"plaintext\"] \n\n\"demo\":\"_parent_index\"->\"main\":\"_index\" [id=\"demo_1\"]\n\"education\":\"_parent_index\"->\"main\":\"_index\" [id=\"education_1\"]\n\"hobbies_list\":\"_parent_index\"->\"demo\":\"_index\" [id=\"hobbies_list_1\"]\n\"lang_list\":\"_parent_index\"->\"demo\":\"_index\" [id=\"lang_list_1\"]\n}","config":{"engine":null,"options":null}},"evals":[],"jsHooks":[]}</script>
+<p>This visual representation of table relationships can significantly
+aid in planning your data analysis strategy and ensuring that you’re
+working with the data in a way that respects its inherent structure.</p>
 </div>
 <div id="number-of-rows-of-each-table" class="section level3">
 <h3>Number of rows of each table</h3>
@@ -1940,23 +2017,23 @@ separately. The principal table, where you have the first
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="fu">glimpse</span>(df<span class="sc">$</span>main)</span>
 <span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a><span class="co">#&gt; Rows: 3</span></span>
 <span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a><span class="co">#&gt; Columns: 17</span></span>
-<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a><span class="co">#&gt; $ start                &lt;dttm&gt; 2022-01-06 15:25:12, 2022-01-06 15:17:18, 2022-0…</span></span>
-<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a><span class="co">#&gt; $ end                  &lt;dttm&gt; 2022-01-06 15:28:36, 2022-01-06 15:25:11, 2022-0…</span></span>
+<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a><span class="co">#&gt; $ start                &lt;dttm&gt; 2022-01-06 15:16:21, 2022-01-06 15:17:18, 2022-0…</span></span>
+<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a><span class="co">#&gt; $ end                  &lt;dttm&gt; 2022-01-06 15:17:18, 2022-01-06 15:25:11, 2022-0…</span></span>
 <span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a><span class="co">#&gt; $ today                &lt;date&gt; 2022-01-06, 2022-01-06, 2022-01-06</span></span>
-<span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a><span class="co">#&gt; $ family_count         &lt;dbl&gt; 3, 2, 2</span></span>
-<span id="cb8-8"><a href="#cb8-8" tabindex="-1"></a><span class="co">#&gt; $ family_count_note    &lt;lgl&gt; NA, NA, NA</span></span>
-<span id="cb8-9"><a href="#cb8-9" tabindex="-1"></a><span class="co">#&gt; $ `_index`             &lt;int&gt; 1, 2, 3</span></span>
-<span id="cb8-10"><a href="#cb8-10" tabindex="-1"></a><span class="co">#&gt; $ `_id`                &lt;int&gt; 17727576, 17727538, 17727380</span></span>
-<span id="cb8-11"><a href="#cb8-11" tabindex="-1"></a><span class="co">#&gt; $ uuid                 &lt;chr&gt; &quot;ee485fd6655b4e328fdd895ac0451656&quot;, &quot;ee485fd6655…</span></span>
-<span id="cb8-12"><a href="#cb8-12" tabindex="-1"></a><span class="co">#&gt; $ education_count      &lt;dbl&gt; 3, 2, 2</span></span>
-<span id="cb8-13"><a href="#cb8-13" tabindex="-1"></a><span class="co">#&gt; $ `__version__`        &lt;chr&gt; &quot;vcs3hEpGKxBo8G5uQa94oD&quot;, &quot;vcs3hEpGKxBo8G5uQa94oD…</span></span>
-<span id="cb8-14"><a href="#cb8-14" tabindex="-1"></a><span class="co">#&gt; $ instanceID           &lt;chr&gt; &quot;uuid:c4723152-3b1c-4f60-ac30-0f3d6505d617&quot;, &quot;uui…</span></span>
-<span id="cb8-15"><a href="#cb8-15" tabindex="-1"></a><span class="co">#&gt; $ `_xform_id_string`   &lt;chr&gt; &quot;aANhxwX9S6BCsiYMgQj9kV&quot;, &quot;aANhxwX9S6BCsiYMgQj9kV…</span></span>
-<span id="cb8-16"><a href="#cb8-16" tabindex="-1"></a><span class="co">#&gt; $ `_uuid`              &lt;chr&gt; &quot;c4723152-3b1c-4f60-ac30-0f3d6505d617&quot;, &quot;06552d3d…</span></span>
-<span id="cb8-17"><a href="#cb8-17" tabindex="-1"></a><span class="co">#&gt; $ `_status`            &lt;chr&gt; &quot;submitted_via_web&quot;, &quot;submitted_via_web&quot;, &quot;submit…</span></span>
-<span id="cb8-18"><a href="#cb8-18" tabindex="-1"></a><span class="co">#&gt; $ `_submission_time`   &lt;dttm&gt; 2022-01-06 15:28:47, 2022-01-06 15:25:23, 2022-01…</span></span>
-<span id="cb8-19"><a href="#cb8-19" tabindex="-1"></a><span class="co">#&gt; $ `_validation_status` &lt;chr&gt; NA, NA, NA</span></span>
-<span id="cb8-20"><a href="#cb8-20" tabindex="-1"></a><span class="co">#&gt; $ `_submitted_by`      &lt;lgl&gt; NA, NA, NA</span></span></code></pre></div>
+<span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a><span class="co">#&gt; $ `_index`             &lt;int&gt; 1, 2, 3</span></span>
+<span id="cb8-8"><a href="#cb8-8" tabindex="-1"></a><span class="co">#&gt; $ `_id`                &lt;int&gt; 17727380, 17727538, 17727576</span></span>
+<span id="cb8-9"><a href="#cb8-9" tabindex="-1"></a><span class="co">#&gt; $ uuid                 &lt;chr&gt; &quot;ee485fd6655b4e328fdd895ac0451656&quot;, &quot;ee485fd6655…</span></span>
+<span id="cb8-10"><a href="#cb8-10" tabindex="-1"></a><span class="co">#&gt; $ family_count         &lt;dbl&gt; 2, 2, 3</span></span>
+<span id="cb8-11"><a href="#cb8-11" tabindex="-1"></a><span class="co">#&gt; $ education_count      &lt;dbl&gt; 2, 2, 3</span></span>
+<span id="cb8-12"><a href="#cb8-12" tabindex="-1"></a><span class="co">#&gt; $ `__version__`        &lt;chr&gt; &quot;vcs3hEpGKxBo8G5uQa94oD&quot;, &quot;vcs3hEpGKxBo8G5uQa94oD…</span></span>
+<span id="cb8-13"><a href="#cb8-13" tabindex="-1"></a><span class="co">#&gt; $ instanceID           &lt;chr&gt; &quot;uuid:c2fbd800-f9d9-4a68-a9da-3917da86c318&quot;, &quot;uui…</span></span>
+<span id="cb8-14"><a href="#cb8-14" tabindex="-1"></a><span class="co">#&gt; $ `_xform_id_string`   &lt;chr&gt; &quot;aANhxwX9S6BCsiYMgQj9kV&quot;, &quot;aANhxwX9S6BCsiYMgQj9kV…</span></span>
+<span id="cb8-15"><a href="#cb8-15" tabindex="-1"></a><span class="co">#&gt; $ `_uuid`              &lt;chr&gt; &quot;c2fbd800-f9d9-4a68-a9da-3917da86c318&quot;, &quot;06552d3d…</span></span>
+<span id="cb8-16"><a href="#cb8-16" tabindex="-1"></a><span class="co">#&gt; $ `_status`            &lt;chr&gt; &quot;submitted_via_web&quot;, &quot;submitted_via_web&quot;, &quot;submit…</span></span>
+<span id="cb8-17"><a href="#cb8-17" tabindex="-1"></a><span class="co">#&gt; $ `_submission_time`   &lt;dttm&gt; 2022-01-06 15:17:28, 2022-01-06 15:25:23, 2022-01…</span></span>
+<span id="cb8-18"><a href="#cb8-18" tabindex="-1"></a><span class="co">#&gt; $ `_validation_status` &lt;chr&gt; NA, NA, NA</span></span>
+<span id="cb8-19"><a href="#cb8-19" tabindex="-1"></a><span class="co">#&gt; $ `_submitted_by`      &lt;lgl&gt; NA, NA, NA</span></span>
+<span id="cb8-20"><a href="#cb8-20" tabindex="-1"></a><span class="co">#&gt; $ `_attachments`       &lt;list&gt; &lt;NULL&gt;, &lt;NULL&gt;, &lt;NULL&gt;</span></span></code></pre></div>
 <p>The other tables are named following the names of their associated
 <code>repeat groups</code>. For instance, the <code>education</code>
 table is named after the <code>education</code>
@@ -1964,10 +2041,10 @@ table is named after the <code>education</code>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="fu">glimpse</span>(df<span class="sc">$</span>education)</span>
 <span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a><span class="co">#&gt; Rows: 7</span></span>
 <span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a><span class="co">#&gt; Columns: 6</span></span>
-<span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a><span class="co">#&gt; $ name_individual2     &lt;chr&gt; &quot;Jemelle&quot;, &quot;Fatim&quot;, &quot;Ali&quot;, &quot;Shannon&quot;, &quot;Skip&quot;, &quot;Ah…</span></span>
-<span id="cb9-5"><a href="#cb9-5" tabindex="-1"></a><span class="co">#&gt; $ edu_level            &lt;chr+lbl&gt; &quot;3&quot;, &quot;3&quot;, &quot;1&quot;, &quot;3&quot;, &quot;3&quot;, &quot;3&quot;, &quot;3&quot;</span></span>
+<span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a><span class="co">#&gt; $ name_individual2     &lt;chr&gt; &quot;Ahmad&quot;, &quot;Myriam&quot;, &quot;Shannon&quot;, &quot;Skip&quot;, &quot;Jemelle&quot;, …</span></span>
+<span id="cb9-5"><a href="#cb9-5" tabindex="-1"></a><span class="co">#&gt; $ edu_level            &lt;chr+lbl&gt; &quot;3&quot;, &quot;3&quot;, &quot;3&quot;, &quot;3&quot;, &quot;3&quot;, &quot;3&quot;, &quot;1&quot;</span></span>
 <span id="cb9-6"><a href="#cb9-6" tabindex="-1"></a><span class="co">#&gt; $ `_index`             &lt;int&gt; 1, 2, 3, 4, 5, 6, 7</span></span>
-<span id="cb9-7"><a href="#cb9-7" tabindex="-1"></a><span class="co">#&gt; $ `_parent_index`      &lt;int&gt; 1, 1, 1, 2, 2, 3, 3</span></span>
+<span id="cb9-7"><a href="#cb9-7" tabindex="-1"></a><span class="co">#&gt; $ `_parent_index`      &lt;int&gt; 1, 1, 2, 2, 3, 3, 3</span></span>
 <span id="cb9-8"><a href="#cb9-8" tabindex="-1"></a><span class="co">#&gt; $ `_parent_table_name` &lt;chr&gt; &quot;main&quot;, &quot;main&quot;, &quot;main&quot;, &quot;main&quot;, &quot;main&quot;, &quot;main…</span></span>
 <span id="cb9-9"><a href="#cb9-9" tabindex="-1"></a><span class="co">#&gt; $ `_validation_status` &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA</span></span></code></pre></div>
 </div>
@@ -1986,6 +2063,9 @@ they will be filtered as well.</p>
 <span id="cb10-3"><a href="#cb10-3" tabindex="-1"></a>  <span class="fu">dm_nrow</span>()</span>
 <span id="cb10-4"><a href="#cb10-4" tabindex="-1"></a><span class="co">#&gt;         main         demo hobbies_list    lang_list    education </span></span>
 <span id="cb10-5"><a href="#cb10-5" tabindex="-1"></a><span class="co">#&gt;            1            2            4            0            2</span></span></code></pre></div>
+<p>This approach ensures that your filtered dataset maintains the
+structural integrity of your survey data, leading to more reliable and
+consistent analysis results.</p>
 </div>
 <div id="joining-tables" class="section level2">
 <h2>Joining tables</h2>
@@ -2001,28 +2081,28 @@ operation starting from <code>education</code>.</p>
 <span id="cb11-4"><a href="#cb11-4" tabindex="-1"></a>  <span class="fu">glimpse</span>()</span>
 <span id="cb11-5"><a href="#cb11-5" tabindex="-1"></a><span class="co">#&gt; Rows: 7</span></span>
 <span id="cb11-6"><a href="#cb11-6" tabindex="-1"></a><span class="co">#&gt; Columns: 22</span></span>
-<span id="cb11-7"><a href="#cb11-7" tabindex="-1"></a><span class="co">#&gt; $ name_individual2               &lt;chr&gt; &quot;Jemelle&quot;, &quot;Fatim&quot;, &quot;Ali&quot;, &quot;Shannon&quot;, &quot;…</span></span>
-<span id="cb11-8"><a href="#cb11-8" tabindex="-1"></a><span class="co">#&gt; $ edu_level                      &lt;chr+lbl&gt; &quot;3&quot;, &quot;3&quot;, &quot;1&quot;, &quot;3&quot;, &quot;3&quot;, &quot;3&quot;, &quot;3&quot;</span></span>
+<span id="cb11-7"><a href="#cb11-7" tabindex="-1"></a><span class="co">#&gt; $ name_individual2               &lt;chr&gt; &quot;Ahmad&quot;, &quot;Myriam&quot;, &quot;Shannon&quot;, &quot;Skip&quot;, &quot;…</span></span>
+<span id="cb11-8"><a href="#cb11-8" tabindex="-1"></a><span class="co">#&gt; $ edu_level                      &lt;chr+lbl&gt; &quot;3&quot;, &quot;3&quot;, &quot;3&quot;, &quot;3&quot;, &quot;3&quot;, &quot;3&quot;, &quot;1&quot;</span></span>
 <span id="cb11-9"><a href="#cb11-9" tabindex="-1"></a><span class="co">#&gt; $ `_index`                       &lt;int&gt; 1, 2, 3, 4, 5, 6, 7</span></span>
-<span id="cb11-10"><a href="#cb11-10" tabindex="-1"></a><span class="co">#&gt; $ `_parent_index`                &lt;int&gt; 1, 1, 1, 2, 2, 3, 3</span></span>
+<span id="cb11-10"><a href="#cb11-10" tabindex="-1"></a><span class="co">#&gt; $ `_parent_index`                &lt;int&gt; 1, 1, 2, 2, 3, 3, 3</span></span>
 <span id="cb11-11"><a href="#cb11-11" tabindex="-1"></a><span class="co">#&gt; $ `_parent_table_name`           &lt;chr&gt; &quot;main&quot;, &quot;main&quot;, &quot;main&quot;, &quot;main&quot;, &quot;ma…</span></span>
 <span id="cb11-12"><a href="#cb11-12" tabindex="-1"></a><span class="co">#&gt; $ `_validation_status.education` &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA</span></span>
-<span id="cb11-13"><a href="#cb11-13" tabindex="-1"></a><span class="co">#&gt; $ start                          &lt;dttm&gt; 2022-01-06 15:25:12, 2022-01-06 15:25:1…</span></span>
-<span id="cb11-14"><a href="#cb11-14" tabindex="-1"></a><span class="co">#&gt; $ end                            &lt;dttm&gt; 2022-01-06 15:28:36, 2022-01-06 15:28:3…</span></span>
+<span id="cb11-13"><a href="#cb11-13" tabindex="-1"></a><span class="co">#&gt; $ start                          &lt;dttm&gt; 2022-01-06 15:16:21, 2022-01-06 15:16:2…</span></span>
+<span id="cb11-14"><a href="#cb11-14" tabindex="-1"></a><span class="co">#&gt; $ end                            &lt;dttm&gt; 2022-01-06 15:17:18, 2022-01-06 15:17:1…</span></span>
 <span id="cb11-15"><a href="#cb11-15" tabindex="-1"></a><span class="co">#&gt; $ today                          &lt;date&gt; 2022-01-06, 2022-01-06, 2022-01-06, 202…</span></span>
-<span id="cb11-16"><a href="#cb11-16" tabindex="-1"></a><span class="co">#&gt; $ family_count                   &lt;dbl&gt; 3, 3, 3, 2, 2, 2, 2</span></span>
-<span id="cb11-17"><a href="#cb11-17" tabindex="-1"></a><span class="co">#&gt; $ family_count_note              &lt;lgl&gt; NA, NA, NA, NA, NA, NA, NA</span></span>
-<span id="cb11-18"><a href="#cb11-18" tabindex="-1"></a><span class="co">#&gt; $ `_id`                          &lt;int&gt; 17727576, 17727576, 17727576, 17727538,…</span></span>
-<span id="cb11-19"><a href="#cb11-19" tabindex="-1"></a><span class="co">#&gt; $ uuid                           &lt;chr&gt; &quot;ee485fd6655b4e328fdd895ac0451656&quot;, &quot;e…</span></span>
-<span id="cb11-20"><a href="#cb11-20" tabindex="-1"></a><span class="co">#&gt; $ education_count                &lt;dbl&gt; 3, 3, 3, 2, 2, 2, 2</span></span>
-<span id="cb11-21"><a href="#cb11-21" tabindex="-1"></a><span class="co">#&gt; $ `__version__`                  &lt;chr&gt; &quot;vcs3hEpGKxBo8G5uQa94oD&quot;, &quot;vcs3hEpGKxB…</span></span>
-<span id="cb11-22"><a href="#cb11-22" tabindex="-1"></a><span class="co">#&gt; $ instanceID                     &lt;chr&gt; &quot;uuid:c4723152-3b1c-4f60-ac30-0f3d6505…</span></span>
-<span id="cb11-23"><a href="#cb11-23" tabindex="-1"></a><span class="co">#&gt; $ `_xform_id_string`             &lt;chr&gt; &quot;aANhxwX9S6BCsiYMgQj9kV&quot;, &quot;aANhxwX9S6BC…</span></span>
-<span id="cb11-24"><a href="#cb11-24" tabindex="-1"></a><span class="co">#&gt; $ `_uuid`                        &lt;chr&gt; &quot;c4723152-3b1c-4f60-ac30-0f3d6505d617&quot;,…</span></span>
-<span id="cb11-25"><a href="#cb11-25" tabindex="-1"></a><span class="co">#&gt; $ `_status`                      &lt;chr&gt; &quot;submitted_via_web&quot;, &quot;submitted_via_web…</span></span>
-<span id="cb11-26"><a href="#cb11-26" tabindex="-1"></a><span class="co">#&gt; $ `_submission_time`             &lt;dttm&gt; 2022-01-06 15:28:47, 2022-01-06 15:28:4…</span></span>
-<span id="cb11-27"><a href="#cb11-27" tabindex="-1"></a><span class="co">#&gt; $ `_validation_status.main`      &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA</span></span>
-<span id="cb11-28"><a href="#cb11-28" tabindex="-1"></a><span class="co">#&gt; $ `_submitted_by`                &lt;lgl&gt; NA, NA, NA, NA, NA, NA, NA</span></span></code></pre></div>
+<span id="cb11-16"><a href="#cb11-16" tabindex="-1"></a><span class="co">#&gt; $ `_id`                          &lt;int&gt; 17727380, 17727380, 17727538, 17727538,…</span></span>
+<span id="cb11-17"><a href="#cb11-17" tabindex="-1"></a><span class="co">#&gt; $ uuid                           &lt;chr&gt; &quot;ee485fd6655b4e328fdd895ac0451656&quot;, &quot;e…</span></span>
+<span id="cb11-18"><a href="#cb11-18" tabindex="-1"></a><span class="co">#&gt; $ family_count                   &lt;dbl&gt; 2, 2, 2, 2, 3, 3, 3</span></span>
+<span id="cb11-19"><a href="#cb11-19" tabindex="-1"></a><span class="co">#&gt; $ education_count                &lt;dbl&gt; 2, 2, 2, 2, 3, 3, 3</span></span>
+<span id="cb11-20"><a href="#cb11-20" tabindex="-1"></a><span class="co">#&gt; $ `__version__`                  &lt;chr&gt; &quot;vcs3hEpGKxBo8G5uQa94oD&quot;, &quot;vcs3hEpGKxB…</span></span>
+<span id="cb11-21"><a href="#cb11-21" tabindex="-1"></a><span class="co">#&gt; $ instanceID                     &lt;chr&gt; &quot;uuid:c2fbd800-f9d9-4a68-a9da-3917da86…</span></span>
+<span id="cb11-22"><a href="#cb11-22" tabindex="-1"></a><span class="co">#&gt; $ `_xform_id_string`             &lt;chr&gt; &quot;aANhxwX9S6BCsiYMgQj9kV&quot;, &quot;aANhxwX9S6BC…</span></span>
+<span id="cb11-23"><a href="#cb11-23" tabindex="-1"></a><span class="co">#&gt; $ `_uuid`                        &lt;chr&gt; &quot;c2fbd800-f9d9-4a68-a9da-3917da86c318&quot;,…</span></span>
+<span id="cb11-24"><a href="#cb11-24" tabindex="-1"></a><span class="co">#&gt; $ `_status`                      &lt;chr&gt; &quot;submitted_via_web&quot;, &quot;submitted_via_web…</span></span>
+<span id="cb11-25"><a href="#cb11-25" tabindex="-1"></a><span class="co">#&gt; $ `_submission_time`             &lt;dttm&gt; 2022-01-06 15:17:28, 2022-01-06 15:17:2…</span></span>
+<span id="cb11-26"><a href="#cb11-26" tabindex="-1"></a><span class="co">#&gt; $ `_validation_status.main`      &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA</span></span>
+<span id="cb11-27"><a href="#cb11-27" tabindex="-1"></a><span class="co">#&gt; $ `_submitted_by`                &lt;lgl&gt; NA, NA, NA, NA, NA, NA, NA</span></span>
+<span id="cb11-28"><a href="#cb11-28" tabindex="-1"></a><span class="co">#&gt; $ `_attachments`                 &lt;list&gt; &lt;NULL&gt;, &lt;NULL&gt;, &lt;NULL&gt;, &lt;NULL&gt;, &lt;NULL&gt;,…</span></span></code></pre></div>
 <p>This logic can be extended to create the widest possible table
 through a cascade of joins, commencing from a deeper table
 (<code>.start</code> argument) and ending at the main table. Taking
@@ -2037,38 +2117,53 @@ will be combined with the <code>main</code> table.</p>
 <span id="cb12-5"><a href="#cb12-5" tabindex="-1"></a>  <span class="fu">glimpse</span>()</span>
 <span id="cb12-6"><a href="#cb12-6" tabindex="-1"></a><span class="co">#&gt; Rows: 14</span></span>
 <span id="cb12-7"><a href="#cb12-7" tabindex="-1"></a><span class="co">#&gt; Columns: 32</span></span>
-<span id="cb12-8"><a href="#cb12-8" tabindex="-1"></a><span class="co">#&gt; $ hobbies                           &lt;chr&gt; &quot;Reading&quot;, &quot;MMA&quot;, &quot;Origami&quot;, &quot;Soccer…</span></span>
+<span id="cb12-8"><a href="#cb12-8" tabindex="-1"></a><span class="co">#&gt; $ hobbies                           &lt;chr&gt; &quot;Basketball&quot;, &quot;Video games&quot;, &quot;Karaok…</span></span>
 <span id="cb12-9"><a href="#cb12-9" tabindex="-1"></a><span class="co">#&gt; $ `_index`                          &lt;int&gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 1…</span></span>
-<span id="cb12-10"><a href="#cb12-10" tabindex="-1"></a><span class="co">#&gt; $ `_parent_index.hobbies_list`      &lt;int&gt; 1, 1, 1, 2, 2, 3, 3, 4, 4, 4, 5, 6, …</span></span>
+<span id="cb12-10"><a href="#cb12-10" tabindex="-1"></a><span class="co">#&gt; $ `_parent_index.hobbies_list`      &lt;int&gt; 1, 1, 2, 3, 3, 3, 4, 5, 5, 5, 6, 6, …</span></span>
 <span id="cb12-11"><a href="#cb12-11" tabindex="-1"></a><span class="co">#&gt; $ `_parent_table_name.hobbies_list` &lt;chr&gt; &quot;demo&quot;, &quot;demo&quot;, &quot;demo&quot;, &quot;demo&quot;, &quot;dem…</span></span>
 <span id="cb12-12"><a href="#cb12-12" tabindex="-1"></a><span class="co">#&gt; $ `_validation_status.hobbies_list` &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, …</span></span>
-<span id="cb12-13"><a href="#cb12-13" tabindex="-1"></a><span class="co">#&gt; $ name                              &lt;chr&gt; &quot;Jemelle&quot;, &quot;Jemelle&quot;, &quot;Jemelle&quot;, &quot;Fa…</span></span>
-<span id="cb12-14"><a href="#cb12-14" tabindex="-1"></a><span class="co">#&gt; $ age                               &lt;dbl&gt; 35, 35, 35, 15, 15, 9, 9, 40, 40, 40…</span></span>
-<span id="cb12-15"><a href="#cb12-15" tabindex="-1"></a><span class="co">#&gt; $ sex                               &lt;chr+lbl&gt; &quot;2&quot;, &quot;2&quot;, &quot;2&quot;, &quot;2&quot;, &quot;2&quot;, &quot;1&quot;, &quot;1…</span></span>
-<span id="cb12-16"><a href="#cb12-16" tabindex="-1"></a><span class="co">#&gt; $ hobby                             &lt;dbl&gt; 3, 3, 3, 2, 2, 2, 2, 3, 3, 3, 1, 2, …</span></span>
-<span id="cb12-17"><a href="#cb12-17" tabindex="-1"></a><span class="co">#&gt; $ morelang                          &lt;chr+lbl&gt; &quot;1&quot;, &quot;1&quot;, &quot;1&quot;, &quot;1&quot;, &quot;1&quot;, &quot;1&quot;, &quot;1…</span></span>
-<span id="cb12-18"><a href="#cb12-18" tabindex="-1"></a><span class="co">#&gt; $ name_individual                   &lt;chr&gt; &quot;Jemelle&quot;, &quot;Jemelle&quot;, &quot;Jemelle&quot;, &quot;Fa…</span></span>
-<span id="cb12-19"><a href="#cb12-19" tabindex="-1"></a><span class="co">#&gt; $ `_parent_index.demo`              &lt;int&gt; 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 3, …</span></span>
-<span id="cb12-20"><a href="#cb12-20" tabindex="-1"></a><span class="co">#&gt; $ hobbies_list_count                &lt;dbl&gt; 3, 3, 3, 2, 2, 2, 2, 3, 3, 3, 1, 2, …</span></span>
-<span id="cb12-21"><a href="#cb12-21" tabindex="-1"></a><span class="co">#&gt; $ lang_list_count                   &lt;dbl&gt; 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, …</span></span>
+<span id="cb12-13"><a href="#cb12-13" tabindex="-1"></a><span class="co">#&gt; $ name                              &lt;chr&gt; &quot;Ahmad&quot;, &quot;Ahmad&quot;, &quot;Myriam&quot;, &quot;Shannon…</span></span>
+<span id="cb12-14"><a href="#cb12-14" tabindex="-1"></a><span class="co">#&gt; $ age                               &lt;dbl&gt; 30, 30, 20, 40, 40, 40, 65, 35, 35, …</span></span>
+<span id="cb12-15"><a href="#cb12-15" tabindex="-1"></a><span class="co">#&gt; $ sex                               &lt;chr+lbl&gt; &quot;1&quot;, &quot;1&quot;, &quot;2&quot;, &quot;1&quot;, &quot;1&quot;, &quot;1&quot;, &quot;1…</span></span>
+<span id="cb12-16"><a href="#cb12-16" tabindex="-1"></a><span class="co">#&gt; $ hobby                             &lt;dbl&gt; 2, 2, 1, 3, 3, 3, 1, 3, 3, 3, 2, 2, …</span></span>
+<span id="cb12-17"><a href="#cb12-17" tabindex="-1"></a><span class="co">#&gt; $ morelang                          &lt;chr+lbl&gt; &quot;1&quot;, &quot;1&quot;, &quot;0&quot;, &quot;0&quot;, &quot;0&quot;, &quot;0&quot;, &quot;0…</span></span>
+<span id="cb12-18"><a href="#cb12-18" tabindex="-1"></a><span class="co">#&gt; $ name_individual                   &lt;chr&gt; &quot;Ahmad&quot;, &quot;Ahmad&quot;, &quot;Myriam&quot;, &quot;Shannon…</span></span>
+<span id="cb12-19"><a href="#cb12-19" tabindex="-1"></a><span class="co">#&gt; $ `_parent_index.demo`              &lt;int&gt; 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3, …</span></span>
+<span id="cb12-20"><a href="#cb12-20" tabindex="-1"></a><span class="co">#&gt; $ hobbies_list_count                &lt;dbl&gt; 2, 2, 1, 3, 3, 3, 1, 3, 3, 3, 2, 2, …</span></span>
+<span id="cb12-21"><a href="#cb12-21" tabindex="-1"></a><span class="co">#&gt; $ lang_list_count                   &lt;dbl&gt; 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, …</span></span>
 <span id="cb12-22"><a href="#cb12-22" tabindex="-1"></a><span class="co">#&gt; $ `_parent_table_name.demo`         &lt;chr&gt; &quot;main&quot;, &quot;main&quot;, &quot;main&quot;, &quot;main&quot;, &quot;mai…</span></span>
 <span id="cb12-23"><a href="#cb12-23" tabindex="-1"></a><span class="co">#&gt; $ `_validation_status.demo`         &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, …</span></span>
-<span id="cb12-24"><a href="#cb12-24" tabindex="-1"></a><span class="co">#&gt; $ start                             &lt;dttm&gt; 2022-01-06 15:25:12, 2022-01-06 15:…</span></span>
-<span id="cb12-25"><a href="#cb12-25" tabindex="-1"></a><span class="co">#&gt; $ end                               &lt;dttm&gt; 2022-01-06 15:28:36, 2022-01-06 15:…</span></span>
+<span id="cb12-24"><a href="#cb12-24" tabindex="-1"></a><span class="co">#&gt; $ start                             &lt;dttm&gt; 2022-01-06 15:16:21, 2022-01-06 15:…</span></span>
+<span id="cb12-25"><a href="#cb12-25" tabindex="-1"></a><span class="co">#&gt; $ end                               &lt;dttm&gt; 2022-01-06 15:17:18, 2022-01-06 15:…</span></span>
 <span id="cb12-26"><a href="#cb12-26" tabindex="-1"></a><span class="co">#&gt; $ today                             &lt;date&gt; 2022-01-06, 2022-01-06, 2022-01-06,…</span></span>
-<span id="cb12-27"><a href="#cb12-27" tabindex="-1"></a><span class="co">#&gt; $ family_count                      &lt;dbl&gt; 3, 3, 3, 3, 3, 3, 3, 2, 2, 2, 2, 2, …</span></span>
-<span id="cb12-28"><a href="#cb12-28" tabindex="-1"></a><span class="co">#&gt; $ family_count_note                 &lt;lgl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, …</span></span>
-<span id="cb12-29"><a href="#cb12-29" tabindex="-1"></a><span class="co">#&gt; $ `_id`                             &lt;int&gt; 17727576, 17727576, 17727576, 177275…</span></span>
-<span id="cb12-30"><a href="#cb12-30" tabindex="-1"></a><span class="co">#&gt; $ uuid                              &lt;chr&gt; &quot;ee485fd6655b4e328fdd895ac0451656&quot;, …</span></span>
-<span id="cb12-31"><a href="#cb12-31" tabindex="-1"></a><span class="co">#&gt; $ education_count                   &lt;dbl&gt; 3, 3, 3, 3, 3, 3, 3, 2, 2, 2, 2, 2, …</span></span>
-<span id="cb12-32"><a href="#cb12-32" tabindex="-1"></a><span class="co">#&gt; $ `__version__`                     &lt;chr&gt; &quot;vcs3hEpGKxBo8G5uQa94oD&quot;, &quot;vcs3hEpGK…</span></span>
-<span id="cb12-33"><a href="#cb12-33" tabindex="-1"></a><span class="co">#&gt; $ instanceID                        &lt;chr&gt; &quot;uuid:c4723152-3b1c-4f60-ac30-0f3d65…</span></span>
-<span id="cb12-34"><a href="#cb12-34" tabindex="-1"></a><span class="co">#&gt; $ `_xform_id_string`                &lt;chr&gt; &quot;aANhxwX9S6BCsiYMgQj9kV&quot;, &quot;aANhxwX9S…</span></span>
-<span id="cb12-35"><a href="#cb12-35" tabindex="-1"></a><span class="co">#&gt; $ `_uuid`                           &lt;chr&gt; &quot;c4723152-3b1c-4f60-ac30-0f3d6505d61…</span></span>
-<span id="cb12-36"><a href="#cb12-36" tabindex="-1"></a><span class="co">#&gt; $ `_status`                         &lt;chr&gt; &quot;submitted_via_web&quot;, &quot;submitted_via_…</span></span>
-<span id="cb12-37"><a href="#cb12-37" tabindex="-1"></a><span class="co">#&gt; $ `_submission_time`                &lt;dttm&gt; 2022-01-06 15:28:47, 2022-01-06 15:…</span></span>
-<span id="cb12-38"><a href="#cb12-38" tabindex="-1"></a><span class="co">#&gt; $ `_validation_status.main`         &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, …</span></span>
-<span id="cb12-39"><a href="#cb12-39" tabindex="-1"></a><span class="co">#&gt; $ `_submitted_by`                   &lt;lgl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, …</span></span></code></pre></div>
+<span id="cb12-27"><a href="#cb12-27" tabindex="-1"></a><span class="co">#&gt; $ `_id`                             &lt;int&gt; 17727380, 17727380, 17727380, 177275…</span></span>
+<span id="cb12-28"><a href="#cb12-28" tabindex="-1"></a><span class="co">#&gt; $ uuid                              &lt;chr&gt; &quot;ee485fd6655b4e328fdd895ac0451656&quot;, …</span></span>
+<span id="cb12-29"><a href="#cb12-29" tabindex="-1"></a><span class="co">#&gt; $ family_count                      &lt;dbl&gt; 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, …</span></span>
+<span id="cb12-30"><a href="#cb12-30" tabindex="-1"></a><span class="co">#&gt; $ education_count                   &lt;dbl&gt; 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, …</span></span>
+<span id="cb12-31"><a href="#cb12-31" tabindex="-1"></a><span class="co">#&gt; $ `__version__`                     &lt;chr&gt; &quot;vcs3hEpGKxBo8G5uQa94oD&quot;, &quot;vcs3hEpGK…</span></span>
+<span id="cb12-32"><a href="#cb12-32" tabindex="-1"></a><span class="co">#&gt; $ instanceID                        &lt;chr&gt; &quot;uuid:c2fbd800-f9d9-4a68-a9da-3917da…</span></span>
+<span id="cb12-33"><a href="#cb12-33" tabindex="-1"></a><span class="co">#&gt; $ `_xform_id_string`                &lt;chr&gt; &quot;aANhxwX9S6BCsiYMgQj9kV&quot;, &quot;aANhxwX9S…</span></span>
+<span id="cb12-34"><a href="#cb12-34" tabindex="-1"></a><span class="co">#&gt; $ `_uuid`                           &lt;chr&gt; &quot;c2fbd800-f9d9-4a68-a9da-3917da86c31…</span></span>
+<span id="cb12-35"><a href="#cb12-35" tabindex="-1"></a><span class="co">#&gt; $ `_status`                         &lt;chr&gt; &quot;submitted_via_web&quot;, &quot;submitted_via_…</span></span>
+<span id="cb12-36"><a href="#cb12-36" tabindex="-1"></a><span class="co">#&gt; $ `_submission_time`                &lt;dttm&gt; 2022-01-06 15:17:28, 2022-01-06 15:…</span></span>
+<span id="cb12-37"><a href="#cb12-37" tabindex="-1"></a><span class="co">#&gt; $ `_validation_status.main`         &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, …</span></span>
+<span id="cb12-38"><a href="#cb12-38" tabindex="-1"></a><span class="co">#&gt; $ `_submitted_by`                   &lt;lgl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, …</span></span>
+<span id="cb12-39"><a href="#cb12-39" tabindex="-1"></a><span class="co">#&gt; $ `_attachments`                    &lt;list&gt; &lt;NULL&gt;, &lt;NULL&gt;, &lt;NULL&gt;, &lt;NULL&gt;, &lt;NU…</span></span></code></pre></div>
+</div>
+<div id="conclusion" class="section level2">
+<h2>Conclusion</h2>
+<p>The integration of <code>robotoolbox</code> with the <code>dm</code>
+package provides a powerful toolkit for handling complex survey data
+with repeating groups from <code>KoboToolbox</code>. This approach
+preserves the hierarchical structure of your data, allows for efficient
+manipulation and analysis, and offers flexibility in how you view and
+work with your survey results. By maintaining the relationships between
+different levels of your survey data, it ensures accurate and meaningful
+analyses, from simple filtering to complex joins. Whether you’re dealing
+with household surveys, multi-level organizational data, or any other
+nested data structure, this workflow offers a robust solution for
+managing and analyzing your <code>KoboToolbox</code> data in
+<code>R</code>.</p>
 <p>You can gain extensive knowledge about the <a href="https://cran.r-project.org/package=dm"><code>dm</code></a> package
 by going through its detailed documentation.</p>
 </div>

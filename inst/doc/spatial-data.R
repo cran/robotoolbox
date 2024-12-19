@@ -1,4 +1,4 @@
-## ---- include = FALSE---------------------------------------------------------
+## ----include = FALSE----------------------------------------------------------
 knitr::opts_chunk$set(
   collapse = TRUE,
   message = FALSE,
@@ -24,24 +24,30 @@ mapview::mapviewOptions(
 ## ----asset_list, echo = FALSE-------------------------------------------------
 l <- asset_list
 
-## ---- eval = FALSE------------------------------------------------------------
-#  library(robotoolbox)
-#  library(dplyr)
-#  asset_list <- kobo_asset_list()
-#  uid <- filter(asset_list, name == "Spatial data") |>
-#    pull(uid)
-#  asset <- kobo_asset(uid)
-#  asset
+## ----eval = FALSE-------------------------------------------------------------
+# library(robotoolbox)
+# library(dplyr)
+# 
+# # Retrieve a list of all assets (projects) from your KoboToolbox server
+# asset_list <- kobo_asset_list()
+# 
+# # Filter the asset list to find the specific project and get its unique identifier (uid)
+# uid <- filter(asset_list, name == "Spatial data") |>
+#   pull(uid)
+# 
+# # Load the specific asset (project) using its uid
+# asset <- kobo_asset(uid)
+# asset
 
-## ---- echo = FALSE------------------------------------------------------------
+## ----echo = FALSE-------------------------------------------------------------
 asset <- asset_spatial
 asset
 
-## ---- eval = FALSE------------------------------------------------------------
-#  df <- kobo_data(asset)
-#  glimpse(df)
+## ----eval = FALSE-------------------------------------------------------------
+# df <- kobo_data(asset)
+# glimpse(df)
 
-## ---- echo = FALSE------------------------------------------------------------
+## ----echo = FALSE-------------------------------------------------------------
 df <- data_spatial
 glimpse(df)
 

@@ -9,7 +9,7 @@
 #' @name kobo_form
 #'
 #' @importFrom data.table rbindlist
-#' @importFrom dplyr select nest_join
+#' @importFrom dplyr select nest_join coalesce
 #' @importFrom tibble as_tibble new_tibble
 #' @importFrom tidyr unnest drop_na
 #' @importFrom stringi stri_trans_general
@@ -119,7 +119,10 @@ kobo_form.kobo_asset <- function(x, version = NULL) {
                                cols = all_of(cols_to_unnest),
                                keep_empty = TRUE),
                         gsub("^\\$", "", names(choices)))
-    choices$value_version <- x$deployed_version_id
+    choices_external <- empty_tibble_(c("list_name",
+                                        "value_lang",
+                                        "value_label",
+                                        "value_name"))
     if (!is.null(version))
       choices$value_version <- version
     form <- nest_join(survey, choices,

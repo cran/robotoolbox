@@ -3,9 +3,9 @@
 
 # robotoolbox <img src="man/figures/robotoolbox_hex.png" align="right" width="140" />
 
-[![Project Status: Active - Initial development is in progress, but
-there has not yet been a stable, usable release suitable for the
-public.](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip)
+[![Project Status: Active – The project has reached a stable, usable
+state and is being actively
+developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![GitLab CI Build
 Status](https://gitlab.com/dickoa/robotoolbox/badges/master/pipeline.svg)](https://gitlab.com/dickoa/robotoolbox/-/pipelines)
 [![Codecov Code
@@ -13,20 +13,45 @@ Coverage](https://codecov.io/gl/dickoa/robotoolbox/branch/master/graph/badge.svg
 [![CRAN
 status](https://www.r-pkg.org/badges/version/robotoolbox)](https://CRAN.R-project.org/package=robotoolbox)
 [![License:
-MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/license/mit/)
+MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/license/mit)
 
-`robotoolbox` is an R client to access data from
-[KoboToolbox](https://www.kobotoolbox.org/).
+`robotoolbox` is an R client to access and manage data from
+[KoboToolbox](https://www.kobotoolbox.org/), a powerful tool for
+collecting and analyzing data in challenging environments.
+
+## Features
+
+- Easy authentication with KoboToolbox API
+- List and access KoboToolbox assets
+- Retrieve and process survey submissions
+- Handle multi-language survey forms
+- Work with repeating groups in survey data
+- Process spatial data from KoboToolbox
+- Access and analyze audit logging data
+- Download media attachments
 
 ## Installation
 
-This package is not on yet on CRAN and to install it, you will need the
-[`remotes`](https://github.com/r-lib/remotes) package. You can get
-`robotoolbox` from Gitlab or Github (mirror)
+The package is available on CRAN, Gitlab (dev) and Github (mirror).
+
+### Stable version (CRAN)
 
 ``` r
-## install.packages("remotes")
+install.packages("robotoolbox")
+```
+
+### Development version
+
+you will need the [`remotes`](https://github.com/r-lib/remotes) package
+to install it from Gitlab and Github. You can also use the
+[`pak`](https://github.com/r-lib/pak) package to install it from Github.
+
+``` r
+## From Gitlab
 remotes::install_gitlab("dickoa/robotoolbox")
+
+## From Github
+pak::pkg_install("dickoa/robotoolbox")
 ```
 
 ## robotoolbox: A quick tutorial

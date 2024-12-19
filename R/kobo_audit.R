@@ -1,5 +1,5 @@
 #' @noRd
-kobo_audit_ <- function(uid) {
+kobo_audit_ <- function(uid, progress = FALSE) {
   audit_meta <- get_audit_url_(uid)
   headers <- list(Authorization = paste("Token",
                                         Sys.getenv("KOBOTOOLBOX_TOKEN")))
@@ -8,28 +8,45 @@ kobo_audit_ <- function(uid) {
                            headers = headers)
     req$retry("get",
               times = 3L,
-              retry_only_on = c(500, 503),
+              retry_only_on = c(500, 502, 503),
               terminate_on = 404)
   })
-  sleep <- 0.01
+  sleep <- 0.05
   res <- AsyncQueue$new(.list = reqs,
                         bucket_size = Inf,
                         sleep = sleep)
   res$request()
-  cond <- any(res$status_code() >= 300L)
+  cond <- res$status_code() >= 300L
   if (any(cond)) {
     msg <- res$content()[cond]
     abort(error_msg(msg[[1]]),
           call = NULL)
   }
+
+  if (isTRUE(progress))
+    cli_progress_step("Processing audit data")
+
   res <- res$parse(encoding = "UTF-8")
+  col_classes <- c("event",
+                   "node",
+                   "old-value",
+                   "new-value",
+                   "user",
+                   "change-reason")
+  col_classes <- list(character = col_classes)
   res <- mutate(audit_meta,
-                data = lapply(res, \(path) dt2tibble(fread(path))))
+                data = lapply(res, \(path) suppressWarnings(fread(path,
+                                                                  colClasses = col_classes,
+                                                                  data.table = FALSE))))
+
   res <- select(res, -"download_url")
-  unnest(res, "data") |>
+  res <- unnest(res, "data")
+  res |>
     mutate(name = basename(.data$node), .before = "start",
-           start = as.POSIXct(.data$start / 1000, origin = "1970-01-01"),
-           end = as.POSIXct(.data$end / 1000, origin = "1970-01-01"))
+           start_int = .data$start,
+           start = as.POSIXct(.data$start_int/1000, origin = "1970-01-01"),
+           end_int = .data$end,
+           end = as.POSIXct(.data$end_int/1000, origin = "1970-01-01"))
 }
 
 #' Get all audit logs data from a KoboToolbox survey
@@ -44,9 +61,12 @@ kobo_audit_ <- function(uid) {
 #' @importFrom dplyr mutate select
 #' @importFrom tidyr unnest
 #' @importFrom data.table fread
+#' @importFrom readr type_convert
 #'
 #' @param x the unique identifier of a specific asset (`character`) or
 #' a \code{kobo_asset} object.
+#' @param progress logical, whether or not you want to see the progess via message.
+#' Default to `FALSE`.
 #'
 #' @returns A \code{data.frame}. It contains survey paradata from audit logs.
 #' The following columns are available:
@@ -95,7 +115,7 @@ kobo_audit_ <- function(uid) {
 #' }
 #'
 #' @export
-kobo_audit <- function(x) {
+kobo_audit <- function(x, progress) {
   UseMethod("kobo_audit")
 }
 
@@ -103,7 +123,9 @@ kobo_audit <- function(x) {
 #' @importFrom dplyr filter
 #' @importFrom rlang abort
 #' @export
-kobo_audit.kobo_asset <- function(x) {
+kobo_audit.kobo_asset <- function(x, progress = FALSE) {
+  if (isTRUE(progress))
+    cli_progress_step("Checking audit data availability")
   asset_version_list <- kobo_asset_version_list(x$uid)
   asset_version_list <- filter(asset_version_list,
                                .data$deployed)
@@ -111,7 +133,7 @@ kobo_audit.kobo_asset <- function(x) {
   if (cond) {
     version <- unique(asset_version_list$uid)
     form <- lapply(version, \(v) kobo_form(x, v))
-    form <- list_rbind(form)
+    form <- dt2tibble(rbindlist(form, fill = TRUE))
   } else {
     form <- kobo_form(x)
   }
@@ -119,17 +141,19 @@ kobo_audit.kobo_asset <- function(x) {
   if (!any("audit" %in% form$name))
     abort("`audit` not enabled in the current version of the survey",
           call = NULL)
-  kobo_audit_(x$uid)
+  if (isTRUE(progress))
+    cli_progress_step("Downloading audit data")
+  kobo_audit_(x$uid, progress = progress)
 }
 
 #' @export
-kobo_audit.character <- function(x) {
+kobo_audit.character <- function(x, progress = FALSE) {
   if (!assert_uid(x))
     abort(message = "Invalid asset uid")
-  kobo_audit(kobo_asset(x))
+  kobo_audit(kobo_asset(x), progress = progress)
 }
 
 #' @export
-kobo_audit.default <- function(x) {
+kobo_audit.default <- function(x, progress) {
   abort("You need to use a 'kobo_asset' or an asset uid")
 }
